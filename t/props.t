@@ -1,6 +1,8 @@
-# should always test OK
+#! perl
 
-# use MyModule;  # provides my_function_to_test
+# the following tests exercise properties
+# within the default LT harness
+
 
 use Test::LectroTest trials => 10;
 

@@ -7,7 +7,6 @@ use Carp;
 use Filter::Util::Call;
 
 use constant NO_FILTER => 'NO_FILTER';
-my $debugQ = 0;  # set to 1 to emit source-filter results on STDERR
 
 =head1 NAME
 
@@ -386,11 +385,11 @@ sub make_code_filter {
                 # close of multi-line decl
                 $content = "";
             }
-            elsif ($content && s/(.*)/binding($1)/es) {
+            elsif ($content) {
+                s/(.*)/binding($1)/es;
                 $content .= " $1";
             }
         }
-        print STDERR if $debugQ;
         return $status;
     }
 }

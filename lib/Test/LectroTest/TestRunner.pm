@@ -24,8 +24,8 @@ Test::LectroTest::TestRunner - Configurable Test::Harness-compatible engine for 
  print $result->details unless $result->success;
 
  # test a suite of properties, w/ Test::Harness output
- my $all_successful = $runner->run_suite( @properties );
- print "Splendid!" if $all_successful;
+ my $num_successful = $runner->run_suite( @properties );
+ print "Splendid!" if $num_successful;
 
 =head1 DESCRIPTION
 
@@ -268,8 +268,8 @@ included in the output if the TestRunner's C<verbose> property is
 true.  You may override the default by passing the C<verbose> named
 parameter after all of the properties in the argument list:
 
-  my $all_success = $runner->run_suite( @properties,
-                                        verbose => 1 );
+  my $num_successes = $runner->run_suite( @properties,
+                                          verbose => 1 );
 
 =cut
 
@@ -284,15 +284,15 @@ sub run_suite {
     }
     my %opts = (verbose => $self->verbose, @opts);
     my $verbose = $opts{verbose};
-    $self->number(1);  # reset test-number count
-    my $success = 1;   # assume success
+    $self->number(1);    # reset test-number count
+    my $successful = 0;  # reset success count
     print "1..", scalar @tests, "\n";
     for (@tests) {
         my $results = $self->run($_);
         print $verbose ? $results->details : $results->summary ."\n";
-        $success &&= $results->success;
+        $successful += $results->success ? 1 : 0;
     }
-    return $success;
+    return $successful;
 }
 
 =pod
@@ -438,7 +438,7 @@ sub summary {
     my $self = shift;
     my ($name, $attempts) = ($self->name, $self->attempts);
     my $incomplete = $self->incomplete;
-    my $number = $self->number || 1;
+    my $number = $self->number;
     local $" = " / ";
     return $self->success
         ? "ok $number - '$name' ($attempts attempts)"
@@ -480,9 +480,9 @@ sub counterexample {
     my $vars = $self->counterexample_;
     return "" unless $vars;  # no counterexample
     my $sorted_keys = [ sort keys %$vars ];
-    my $dd = Data::Dumper->new([@$vars{@$sorted_keys}], $sorted_keys);
-    $dd->Sortkeys(1) if $dd->can("Sortkeys");
-    return $dd->Dump;
+    no warnings 'once';
+    local $Data::Dumper::Sortkeys = 1;
+    return Data::Dumper->new([@$vars{@$sorted_keys}], $sorted_keys)->Dump;
 }
 
 =pod 

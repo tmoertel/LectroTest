@@ -3,17 +3,20 @@
 use warnings;
 use strict;
 
-use Test::More tests => 16;
+use Test::More tests => 21;
 use Test::LectroTest;
+
+BEGIN { unshift @INC, 't/lib'; }
+use CaptureOutput;
 
 
 =head1 NAME
 
-t/005.t - tests for Property and TestRunner
+t/runner.t - tests for Property and TestRunner
 
 =head1 SYNOPSIS
 
-perl -Ilib t/005.t
+perl -Ilib t/runner.t
 
 =head1 DESCRIPTION
 
@@ -22,7 +25,7 @@ hand in hand.
 
 =head2 SET UP
 
-First, we declare a few helper functions:
+First, we declare a few helper functions.
 
 =cut
 
@@ -30,17 +33,16 @@ sub check($@) {
     my $property = shift;
     my $runner = Test::LectroTest::TestRunner->new( @_ );
     my $details = $runner->run( $property )->details;
-#   print STDERR $details;
     return $details;
 }
 
 =pod
 
-Next, we declare a few simple properties to check:
+Next, we declare a few simple properties to check.
 
 =cut
 
-my $except_gen  = Gen { die "gen go boom!" };
+my $except_gen   = Gen { die "gen go boom!" };
 
 my $null_1gens   = Property { ##[ ]## 1 };
 my $null_2gens   = Property { ##[ ], [ ]## 1 };
@@ -114,6 +116,12 @@ Some tests to observe labeling properties.
 
 =cut
 
+unlike( check( ( Property { ##[ x <- Unit(0) ]##
+                          $tcon->label(); 1 } )
+           , trials => 10 )
+      , qr/%/s,
+      , "labeling every trial with an empty label yields no label output" );
+
 like( check( ( Property { ##[ x <- Unit(0) ]##
                           $tcon->label("all"); 1 } )
            , trials => 10 )
@@ -127,45 +135,40 @@ like( check( ( Property { ##[ x <- Unit(0) ], [ x <- Unit(1) ]##
     , "labeling half of trials --> 50%" );
 
 
-=pod
+sub labler {
+    my @labels = @_;
+    my $count = 0;
+    return Property {
+        ##[ ]##
+        $tcon->label( $labels[$count++] );
+        $count = 0 if $count == @labels;
+        1;
+    };
+}
 
-=head2 PRE-FLIGHT CHECKS
+# the following test assumes that the number of trials
+# is a multiple of 4
 
-A few tests to see whether we are catching naughtiness
-in our pre-flight checks.
+like( check( labler(qw|a a a b|), trials => 1000 ),
+      qr/ 75% a.*25% b/s,
+      "75/25 labeling case checks" );
 
-=cut
+# the following test assumes that the number of trials
+# is a multiple of 10
 
-eval { Property { ##[ x <- Unit(0)], [ ]##
-                1 } 
+like( check( labler(qw|a a a a a a a b b c|), trials => 1000),
+      qr/ 70% a.*20% b.*10% c/s,
+      "70/20/10 labeling case checks" );
+
+
+my $trivial = Property { ##[ #]##
+    $tcon->trivial;
+    1;
 };
 
-like( $@, qr/\(\) does not match \(x\)/,
-      "pre-flight: sets of bindings must have same vars (x) vs ()" );
-
-eval { Property { ##[ x <- Unit(0)], [ y <- Unit(0) ]##
-                1 } 
-};
-
-like( $@, qr/\(y\) does not match \(x\)/,
-      "pre-flight: sets of bindings must have same vars (x) vs (y)" );
-
-eval { Property { ##[ x <- Unit(0)], [ x <- Unit(0) ], [ ]##
-                1 } 
-};
-
-like( $@, qr/\(\) does not match \(x\)/,
-      "pre-flight: sets of bindings must have same vars (x) vs (x) vs ()" );
-
-
-
-eval { Property { ##[ x <- Unit(0), 1 ]##
-                1 } 
-};
-
-like( $@, qr/did not get a set of valid input-generator bindings/,
-      "pre-flight: odd params in binding is caught" );
-
+like( check($trivial, trials => 100),
+      qr/100% trivial/,
+      "100% trivial labeling case checks" );
 
 =pod
 
@@ -191,6 +194,67 @@ for (qw(0 1 10)) {
           , qr/^ok.*100% desired scale/s,
           , "desired scale $_ --> 100%" );
 }
+
+
+=pod
+
+=head2 TEST NUMBERING
+
+Here we see whether we can override the TestRunner's built in
+numbering.
+
+=cut
+
+like( Test::LectroTest::TestRunner->new->run($null_1gens, 123)->summary,
+      qr/ok 123/, "TestRunner->run(x,N) respects given test number N"
+);
+
+=pod
+
+=head2 VERBOSITY
+
+Now we check to see whether the verbosity indicator is respected.
+
+=cut
+
+# this sub captures the output for a suite of property checks
+
+sub is_prop {
+    ref $_[0] eq 'Test::LectroTest::Property';
+}
+
+sub check_suite {
+    my @props = grep  is_prop($_), @_;
+    my @opts  = grep !is_prop($_), @_;
+    my $recorder = capture(*STDOUT);
+    Test::LectroTest::TestRunner->new(@opts)->run_suite(@props);
+    return $recorder->();
+}
+
+for ([1, \&like, "does"], [0, \&unlike, "does not"]) {
+    my ($verbose, $testfn, $does) = @$_;
+
+    $testfn->( check_suite( verbose => $verbose,
+                            trials  => 10,
+                            Property { ##[ x <- Unit(0) ]##
+                                       $tcon->label("all"); 1 } ),
+               , qr/%/s,
+               , "verbose=>$verbose $does include label statistics"
+    );
+}
+
+for ([1, \&like, "does"], [0, \&unlike, "does not"]) {
+    my ($verbose, $testfn, $does) = @$_;
+
+    $testfn->( check_suite( verbose => $verbose,
+                            trials  => 10,
+                            Property { ##[ x <- Unit(0) ]##
+                                       $x > 0 } ),
+               , qr/counterexample/i,
+               , "verbose=>$verbose $does include counterexample"
+    );
+}
+
 
 
 =head1 AUTHOR

@@ -3,6 +3,19 @@
 LectroTest Change Log
 Tom Moertel (tom@moertel.com)
 
+* 0.30_00   (XXXXXXXXXX)
+
+** Improvements
+
+- Full test coverage!  Devel::Coverage says that the test suite now
+  covers 100% of all LectroTest modules' statements, branches,
+  conditionals, and subroutines.
+
+** Fixes
+
+** Misc
+
+- Added a bunch of new test cases. 
 
 * 0.20_10   (2004-02-16)
 
