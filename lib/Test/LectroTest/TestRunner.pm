@@ -3,6 +3,8 @@ package Test::LectroTest::TestRunner;
 use strict;
 use warnings;
 
+use UNIVERSAL qw( isa );
+
 use Carp;
 use Data::Dumper;
 
@@ -154,7 +156,7 @@ used.
 =cut
 
 sub run {
-    my ($self, $test, $number) = @_;
+    my ($self, $prop, $number) = @_;
 
     # if a test number wasn't provided, take the next from our counter
 
@@ -165,7 +167,7 @@ sub run {
 
     # create a new results object to hold our results; run trials
 
-    my ($inputs_list, $testfn, $name) = @$test{qw/inputs test name/};
+    my ($inputs_list, $testfn, $name) = @$prop{qw/inputs test name/};
     my $results = Test::LectroTest::TestRunner::results->new(
         name => $name, number => $number
     );
@@ -273,14 +275,16 @@ parameter after all of the properties in the argument list:
 
 =cut
 
+sub _prop($) { isa $_[0], "Test::LectroTest::Property" }
+
 sub run_suite {
     local $| = 1;
     my $self = shift;
     my @tests;
     my @opts;
     while (@_) {
-        if (ref $_[0]) {  push @tests, shift;       }
-        else           {  push @opts, shift, shift; }
+        if (_prop $_[0]) {  push @tests, shift;       }
+        else             {  push @opts, shift, shift; }
     }
     my %opts = (verbose => $self->verbose, @opts);
     my $verbose = $opts{verbose};
