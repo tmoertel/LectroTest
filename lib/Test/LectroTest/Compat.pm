@@ -105,7 +105,7 @@ sub holds {
 
 sub check_property {
     no strict 'refs';
-    no warnings;
+    no warnings 'redefine';
     my $diag_store = [];
     my $property = shift;
     local *Test::Builder::ok   = \&disconnected_ok;
