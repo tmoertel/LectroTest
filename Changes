@@ -4,16 +4,14 @@ LectroTest Change Log
 Tom Moertel (tom@moertel.com)
 
 
+* 0.3100   (2005-02-19)
+
+- This release is identical to 0.3000 except that for this release I
+  did not screw up the version numbering in the distribution tarball.
+  (Ouch!)
 
 
-* 0.31   (2005-02-19)
-
-- This release is identical to 0.30 except that for this release
-  I did not screw up the version numbering in the distribution
-  tarball.  (Ouch!)
-
-
-* 0.30   (2005-02-19)
+* 0.3000   (2005-02-19)
 
 ** Improvements
 
@@ -45,7 +43,7 @@ Tom Moertel (tom@moertel.com)
 - Relaxed dependencies on external packages need only for building.
 
 
-* 0.20_10   (2005-02-16)
+* 0.2010   (2005-02-16)
 
 ** Improvements
 
@@ -67,7 +65,7 @@ Tom Moertel (tom@moertel.com)
 
 
 
-* 0.20_08   (2005-02-05)
+* 0.2008   (2005-02-05)
 
 ** Improvements
 
@@ -87,7 +85,7 @@ Tom Moertel (tom@moertel.com)
 - Minor clarifying edits to documentation.
 
 
-* 0.20_07   (2004-09-30)
+* 0.2007   (2004-09-30)
 
 ** Improvements
 
@@ -115,7 +113,7 @@ Tom Moertel (tom@moertel.com)
   export tag instead of under :combinators.
 
 
-* 0.20_06  New combinators, doc fixes (2004-09-15)
+* 0.2006  New combinators, doc fixes (2004-09-15)
 
 ** Improvements
 
@@ -143,7 +141,7 @@ Tom Moertel (tom@moertel.com)
   behavior-test part of Properties during checks.
 
 
-* 0.20_05  Re-release of 0.20_04 to make CPAN happy (2004-09-13)
+* 0.2005  Re-release of 0.2004 to make CPAN happy (2004-09-13)
 
 - I once had a version in Test::LectroTest::Generator but removed it
   because I wanted to version only the entire Test::LectroTest module.
@@ -151,7 +149,7 @@ Tom Moertel (tom@moertel.com)
   So, back in goes the version number, now bumped.
 
 
-* 0.20_04  Documentation improvements, minor code improvements (2004-09-13)
+* 0.2004  Documentation improvements, minor code improvements (2004-09-13)
 
 ** Fixes
 
@@ -168,7 +166,7 @@ Tom Moertel (tom@moertel.com)
   end of load.
 
 
-* 0.20_03  Bug fix and doc improvements (2004-09-11)
+* 0.2003  Bug fix and doc improvements (2004-09-11)
 
 ** Fixes
 
@@ -196,13 +194,13 @@ Tom Moertel (tom@moertel.com)
     - the exception otherwise
 
 
-* 0.20_02  Documentation improvements (2004-09-09)
+* 0.2002  Documentation improvements (2004-09-09)
 
 - Added README (d'oh!) from Test::LectroTest.
 - Updated docs in Test::LectroTest.
 
 
-* 0.20_01  First Pre-CPAN upload release (2004-09-09)
+* 0.2001  First Pre-CPAN upload release (2004-09-09)
 
 - Major documentation improvements
 
@@ -213,10 +211,10 @@ Tom Moertel (tom@moertel.com)
   LectroTest::Simple -> Test::LectroTest
 
 
-* 0.10_02  First public release (2004-09-08)
+* 0.1002  First public release (2004-09-08)
 
 - Clean ups
 
 
-* 0.10_01  First cut
+* 0.1001  First cut
 
