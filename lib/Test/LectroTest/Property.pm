@@ -438,7 +438,7 @@ the syntax, you can disable the filter like so:
 
 The LectroTest home is 
 http://community.moertel.com/LectroTest.
-There you will find more documentation, presentations, a wiki,
+There you will find more documentation, presentations, mailing-list archives, a wiki,
 and other helpful LectroTest-related resources.  It's also the
 best place to ask questions.
 
