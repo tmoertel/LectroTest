@@ -3,13 +3,13 @@
 LectroTest Change Log
 Tom Moertel (tom@moertel.com)
 
+
 * 0.30_00   (XXXXXXXXXX)
 
 ** Improvements
 
-- Full test coverage!  Devel::Coverage says that the test suite now
-  covers 100% of all LectroTest modules' statements, branches,
-  conditionals, and subroutines.
+- Full test coverage!  Devel::Coverage says that the LT unit tests now
+  cover 100% of statements, branches, conditionals, and subroutines.
 
 - Test::LectroTest now follows Test::Simple's exit-code strategy:
   The number of failures (up to 254) are reported via the exit code.
@@ -20,7 +20,6 @@ Tom Moertel (tom@moertel.com)
   written code that checks the result of run_suite, you will need to
   change it.
 
-
 ** Fixes
 
 - An empty suite powered by Test::LectroTest now emits "1..0"
@@ -29,6 +28,7 @@ Tom Moertel (tom@moertel.com)
 ** Misc
 
 - Added a bunch of new test cases. 
+
 
 * 0.20_10   (2004-02-16)
 
