@@ -12,7 +12,7 @@ Tom Moertel (tom@moertel.com)
   cover 100% of statements, branches, conditionals, and subroutines.
 
 - Test::LectroTest now follows Test::Simple's exit-code strategy:
-  The number of failures (up to 254) are reported via the exit code.
+  The number of failures (up to 254) is reported via the exit code.
 
 - (!) Test::LectroTest::TestRunner::run_suite now returns the number
   of properties that successfully checked.  (Before it reported 0 if
