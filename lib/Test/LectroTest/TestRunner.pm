@@ -364,7 +364,7 @@ there is one.  Otherwise, returns an empty string.
 
 =item labels
 
-Label counts.  If any labels were applied to trails during the
+Label counts.  If any labels were applied to trials during the
 property check, this value will be a reference to a hash mapping each
 combination of labels to the count of trials that had that particular
 combination.  Otherwise, it will be undefined.
