@@ -4,7 +4,7 @@ LectroTest Change Log
 Tom Moertel (tom@moertel.com)
 
 
-* 0.30_00   (XXXXXXXXXX)
+* 0.30_00   (2005-02-19)
 
 ** Improvements
 
@@ -14,9 +14,9 @@ Tom Moertel (tom@moertel.com)
 - Test::LectroTest now follows Test::Simple's exit-code strategy:
   The number of failures (up to 254) are reported via the exit code.
 
-- Test::LectroTest::TestRunner::run_suite now returns the number of
-  properties that successfully checked.  (Before it reported 0 if any
-  check failed.) !!!NOTE!!! This is an API change.  If you have
+- (!) Test::LectroTest::TestRunner::run_suite now returns the number
+  of properties that successfully checked.  (Before it reported 0 if
+  any check failed.) !!!NOTE!!! This is an API change.  If you have
   written code that checks the result of run_suite, you will need to
   change it.
 
@@ -29,8 +29,14 @@ Tom Moertel (tom@moertel.com)
 
 - Added a bunch of new test cases. 
 
+- Renamed test files: from t/001.t to t/gens.t, etc.
 
-* 0.20_10   (2004-02-16)
+- Removed superfluous use of Data::Dumper in t/gens.t.
+
+- Relaxed dependencies on external packages need only for building.
+
+
+* 0.20_10   (2005-02-16)
 
 ** Improvements
 
