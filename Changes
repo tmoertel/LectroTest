@@ -4,6 +4,15 @@ LectroTest Change Log
 Tom Moertel (tom@moertel.com)
 
 
+
+
+* 0.31   (2005-02-19)
+
+- This release is identical to 0.30 except that for this release
+  I did not screw up the version numbering in the distribution
+  tarball.  (Ouch!)
+
+
 * 0.30   (2005-02-19)
 
 ** Improvements
