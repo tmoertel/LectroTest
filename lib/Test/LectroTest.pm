@@ -35,7 +35,7 @@ Test::LectroTest - Easy, automatic, specification-based tests
 This module provides a simple (yet full featured) interface to
 LectroTest, an automated, specification-based testing system for Perl.
 To use it, you declare properties that specify the expected behavior
-of your software.  LectroTest then checks your software see whether
+of your software.  LectroTest then checks your software to see whether
 those properties hold.
 
 You declare properties using the C<Property> function, which takes a
