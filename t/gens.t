@@ -2,7 +2,6 @@
 
 use strict;
 use Test::More tests => 248;
-use Data::Dumper;
 
 BEGIN { use_ok( 'Test::LectroTest::Generator', qw(:common :combinators) ) }
 
