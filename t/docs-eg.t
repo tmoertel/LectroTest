@@ -7,11 +7,11 @@ use Test::LectroTest;
 
 =head1 NAME
 
-t/004.t - test cases for examples from documentation
+t/docs-eg.t - test cases for examples from documentation
 
 =head1 SYNOPSIS
 
-  perl -Ilib t/004.t
+  perl -Ilib t/docs-eg.t
 
 =head1 DESCRIPTION
 

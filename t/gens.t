@@ -7,11 +7,11 @@ BEGIN { use_ok( 'Test::LectroTest::Generator', qw(:common :combinators) ) }
 
 =head1 NAME
 
-001.t - Unit tests for Test::LectroTest::Generator
+gens.t - Unit tests for Test::LectroTest::Generator
 
 =head1 SYNOPSIS
 
-    perl -Ilib t/001.t
+    perl -Ilib t/gens.t
 
 =head1 DESCRIPTION
 
