@@ -12,9 +12,9 @@ lib/Test/LectroTest/Generator.pm
 lib/Test/LectroTest/Property.pm
 lib/Test/LectroTest/TestRunner.pm
 lib/Test/LectroTest/Tutorial.pod
-t/001.t
-t/002.t
-t/003.t
-t/004.t
-t/005.t
 t/compat.t
+t/docs-eg.t
+t/errors.t
+t/gens.t
+t/props.t
+t/runner.t
