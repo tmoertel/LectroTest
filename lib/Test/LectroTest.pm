@@ -69,6 +69,12 @@ and I<y> that we bound to the generators earlier.  LectroTest
 automagically loads these lexically bound Perl variables with values
 behind the scenes.)
 
+B<NOTE:> If you want to use test functions like C<ok> from
+L<Test::Simple> or C<is>, C<like>, or C<cmp_ok> from L<Test::More>
+(and the related family of L<Test::Builder>-based testing modules),
+see L<Test::LectroTest::Compat>, which lets you mix and match
+LectroTest with these modules.
+
 Finally, we give the whole Property a name, in this case "my_function
 output is non-negative."  It's a good idea to use a meaningful name
 because LectroTest refers to properties by name in its output.
@@ -88,6 +94,10 @@ that uses the Test::LectroTest module.  (See the L</SYNOPSIS> for an
 example.)  When you run the program, LectroTest will load the property
 (and any others in the file) and check it by running random trials
 against the software you're testing.
+
+B<NOTE:> If you want to place LectroTest property checks into
+a test plan managed by L<Test::Builder>-based modules such as
+L<Test::Simple> or L<Test::More>, see L<Test::LectroTest::Compat>.
 
 If LectroTest is able to "break" your software during the property
 check, it will emit a counterexample to your property's assertions and
@@ -171,6 +181,10 @@ L<Test::LectroTest::Tutorial>.  Also, the slides from my LectroTest
 talk for the Pittsburgh Perl Mongers make for a great introduction.
 Download a copy from the LectroTest home (see below).
 
+L<Test::LectroTest::Compat> lets you mix LectroTest with the
+popular family of L<Test::Builder>-based modules such as
+L<Test::Simple> and L<Test::More>.
+
 L<Test::LectroTest::Property> explains in detail what
 you can put inside of your property specifications.
 
@@ -182,7 +196,6 @@ L<Test::LectroTest::TestRunner> describes the objects that check your
 properties and tells you how to turn their control knobs.  You'll want
 to look here if you're interested in customizing the testing
 procedure.
-
 
 =head1 LECTROTEST HOME
 
