@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::More tests => 21;
+use Test::More tests => 26;
 use Test::LectroTest::Generator ':all';
 use Test::LectroTest::Property;
 use Test::LectroTest::TestRunner;
@@ -120,7 +120,7 @@ Some tests to observe labeling properties.
 
 unlike( check( ( Property { ##[ x <- Unit(0) ]##
                           $tcon->label(); 1 } )
-           , trials => 10 )
+             , trials => 10 )
       , qr/%/s,
       , "labeling every trial with an empty label yields no label output" );
 
@@ -173,6 +173,61 @@ like( check($trivial, trials => 100),
       "100% trivial labeling case checks" );
 
 =pod
+
+=pod
+
+=head2 COUNTEREXAMPLE NOTES
+
+Now we check to see whether notes attached to a failing
+trial are emitted as part of a counterexample.
+
+=cut
+
+# notes should be emitted only when the property check fails
+
+unlike( check( ( Property { ##[ x <- Unit(0) ]##
+                          $tcon->note("XXXX"); 1 } )
+             , trials => 10 )
+      , qr/XXXX/s,
+      , "notes appear only when a check fails"
+);
+
+unlike( check( ( Property { ##[ x <- Unit(0) ]##
+                          $tcon->dump(0, "XXXX"); 1 } )
+             , trials => 10 )
+      , qr/XXXX/s,
+      , "dump notes appear only when a check fails"
+);
+
+
+
+# when the check fails, all notes must be emitted, in order
+
+unlike( check( ( Property { ##[ x <- Unit(0) ]##
+                          $tcon->note(1,2,3,4,5); 0 } )
+             , trials => 10 )
+      , qr/Notes:\s+1\s+2\s+3\s+4\s+5/s,
+      , "all notes are emitted, in order, when check fails"
+);
+
+unlike( check( ( Property { ##[ x <- Unit(0) ]##
+                          $tcon->dump("XXX", "x");
+                          $tcon->dump("YYY", "y");
+                          0 } )
+             , trials => 10 )
+      , qr/Notes:\s+\$x = "XXX";\s+\$y = "YYY"/s,
+      , "dump notes are emitted, in order, when check fails"
+);
+
+unlike( check( ( Property { ##[ x <- Unit(0) ]##
+                          $tcon->dump("XXX");
+                          $tcon->dump("YYY");
+                          0 } )
+             , trials => 10 )
+      , qr/Notes:\s+\$VAR1 = "XXX";\s+\$VAR2 = "YYY"/s,
+      , "unnamed dump notes are emitted, in order, when check fails"
+);
+
 
 =head2 SCALEFN
 

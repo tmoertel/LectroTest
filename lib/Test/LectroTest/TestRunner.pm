@@ -232,6 +232,7 @@ sub run {
 
             unless ( $success ) {
                 $results->counterexample_( $inputs );
+                $results->notes_( $controller->notes );
                 $results->attempts( $attempts );
                 return $results;
             }
@@ -360,7 +361,8 @@ The number assigned to the property that was checked.
 =item counterexample
 
 Returns the counterexample that "broke" the code being tested, if
-there is one.  Otherwise, returns an empty string.
+there is one.  Otherwise, returns an empty string.  If any notes
+have been attached to the failing trial, they will be included.
 
 =item labels
 
@@ -433,6 +435,7 @@ struct( name            => '$',
         success         => '$',
         labels          => '$',
         counterexample_ => '$',
+        notes_          => '$',
         exception       => '$',
         attempts        => '$',
         incomplete      => '$',
@@ -488,7 +491,14 @@ sub counterexample {
     no warnings 'once';
     local $Data::Dumper::Sortkeys = 1;
     local $Data::Dumper::Useqq    = 1;
-    return Data::Dumper->new([@$vars{@$sorted_keys}], $sorted_keys)->Dump;
+    return Data::Dumper->new([@$vars{@$sorted_keys}], $sorted_keys)->Dump .
+           $self->notes;
+}
+
+sub notes {
+    my $self = shift;
+    my $notes = $self->notes_;
+    return $notes ? join("\n", "Notes:", @$notes, "") : "";
 }
 
 =pod 
@@ -506,7 +516,7 @@ The following methods are available.
 package Test::LectroTest::TestRunner::testcontroller;
 import Class::Struct;
 
-struct ( labels => '$', retried => '$' );
+struct ( labels => '$', retried => '$', notes => '$' );
 
 =pod
 
@@ -580,6 +590,76 @@ calling C<label> with "trivial" as the argument.
 
 sub trivial {
     shift->label("trivial");
+}
+
+
+=pod
+
+=item note(I<string>...)
+
+    Property {
+      ##[ s <- String( charset=>"A-Za-z0-9" ) ]##
+      my $s_enc     = encode($s);
+      my $s_enc_dec = decode($s_enc);
+      $tcon->note("s_enc     = $s_enc",
+                  "s_enc_dec = $s_enc_dec");
+      $s eq $s_enc_dec;
+    }, name => "decode is encode's inverse" ;
+
+Adds a note (or notes) to the current trial.  In the event that the
+trial fails, these notes will be emitted as part of the
+counterexample.
+
+Notes can help you debug your code when something goes wrong.  Use
+them as hints to yourself to aid in debugging.  For example, you can
+use notes to record the output of each stage of a multi-stage test.
+
+If you want to include complicated values or data structures in your
+notes, see the C<dump> method, next, which may be more appropriate.
+
+
+=cut
+
+sub note {
+    my $self = shift;
+    my $notes = $self->notes;
+    push @$notes, @_;
+    $self->notes( $notes );
+}
+
+=pod
+
+=item dump(I<value>, I<name>)
+
+    Property {
+      ##[ s <- String ]##
+      my $s_enc     = encode($s);
+      my $s_enc_dec = decode($s_enc);
+      $tcon->dump($s_enc, "s_enc");
+      $tcon->dump($s_enc_dec, "s_enc_dec");
+      $s eq $s_enc_dec;
+    }, name => "decode is encode's inverse" ;
+
+Adds a note to the current trial in which the given I<value> is
+dumped.  The value will be dumped via L<Data::Dumper> and thus may
+be complex and contain weird control characters and so on.  If you
+supply a I<name>, it will be used to name the dumped value.
+
+In the event that the trial fails, the note (and any others) will be
+emitted as part of the counterexample.
+
+See C<note> above for more.
+
+=cut
+
+sub dump {
+    my $self = shift;
+    my ($val, $name) = @_;
+    local $Data::Dumper::Sortkeys = 1;
+    local $Data::Dumper::Useqq    = 1;
+    local $Data::Dumper::Indent   = 0;
+    my @names = $name ? ([$name]) : ();
+    $self->note( Data::Dumper->new( [$val], @names )->Dump );
 }
 
 =pod
