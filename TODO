@@ -68,9 +68,9 @@ X Rename for better harmony with the global Perl namespace:
 
 - Docs review
 
-- Make sure LectroTest URL is in all docs
+X Make sure LectroTest URL is in all docs
 
-- Set version to something sensible
+X Set version to something sensible
 
 * Old stuff
 
