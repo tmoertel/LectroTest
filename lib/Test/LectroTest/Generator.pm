@@ -216,9 +216,10 @@ sub Int(@) {
         . "and cannot be used with a sized generator"
         if 0 < $rlo || 0 > $rhi;
     return Gen {
-        my ($size) = int($_[0]+0.5);
         my ($lo, $hi) = ($rlo, $rhi);
+        my $size = shift;
         if (defined $size) {
+            $size = int( $size + 0.5 );
             $lo = -$size if -$size > $lo;
             $hi =  $size if  $size < $hi;
         }
@@ -280,8 +281,8 @@ sub Float(@) {
         . "and cannot be used with a sized generator"
         if 0 < $rlo || 0 > $rhi;
     return Gen {
-        my ($size) = $_[0];
         my ($lo, $hi) = ($rlo, $rhi);
+        my $size = shift;
         if (defined $size) {
             $lo = -$size if -$size > $lo;
             $hi =  $size if  $size < $hi;

@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 
 use strict;
-use Test::More tests => 220;
+use Test::More tests => 234;
 use Data::Dumper;
 
 BEGIN { use_ok( 'Test::LectroTest::Generator', qw(:common :combinators) ) }
@@ -302,6 +302,22 @@ for ( 'Float(range=>[0,0])' ) {
 
 =pod
 
+Sixth, we test the case where the generator is called
+without sizing guidance.  In this case the full range is
+used.
+
+=cut
+
+for (-3..3) {
+    my ($m,$n) = ($_ - 4, $_ + 4);
+    my $g = Sized { undef } Float(range=>[$m,$n]);
+    dist_mean_ok("Sized{undef} Float(range=>[$m,$n])",
+                 $g, [(undef)x$tsize], sub{$_[0]}, $_);
+}
+
+
+=pod
+
 Finally, we make sure that LectroTest prevents us from using a sized
 generator with a given range that does not contain zero.
 
@@ -437,6 +453,22 @@ for ( 'Int(range=>[0,0])' ) {
            'Test::LectroTest::Generator',
            "$_ is not wrongly caught as empty / "  );
 }
+
+
+=pod
+
+Seventh, we test the case where the generator is called
+without sizing guidance.  In this case the full range is
+used.
+
+=cut
+
+for (-3..3) {
+    my ($m,$n) = ($_ - 5, $_ + 4);
+    my $g = Sized { undef } Int(range=>[$m,$n]);
+    complete_and_uniform_ok($g, "Sized{undef} Int(range=>[$m,$n])",[$m..$n]);
+}
+
 
 =pod
 
