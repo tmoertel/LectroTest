@@ -23,6 +23,9 @@ Tom Moertel (tom@moertel.com)
 
 ** Fixes
 
+- An empty suite powered by Test::LectroTest now emits "1..0"
+  as its sole output when previously there was no output.
+
 ** Misc
 
 - Added a bunch of new test cases. 

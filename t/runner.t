@@ -4,7 +4,9 @@ use warnings;
 use strict;
 
 use Test::More tests => 21;
-use Test::LectroTest;
+use Test::LectroTest::Generator ':all';
+use Test::LectroTest::Property;
+use Test::LectroTest::TestRunner;
 
 BEGIN { unshift @INC, 't/lib'; }
 use CaptureOutput;
