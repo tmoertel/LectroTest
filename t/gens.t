@@ -68,8 +68,6 @@ for (qw/Int Bool Float Char String List Elements(1) Unit(1)
        "$_ ctor returns a Test::LectroTest::Generator");
 }
 
-sub all { $_ || return 0 for @_; 1 }  # courtesy of List::Util
-
 
 #==============================================================================
 #==============================================================================

@@ -14,8 +14,8 @@ Tom Moertel (tom@moertel.com)
       See Test::LectroTest::TestRunner::testcontroller for the
   documentation on the new $tcon->note() and $tcon->dump() methods.
 
-** Fixes
-
+- Strings in counterexamples are now printed in double-quoted form.
+  This makes it easy to see invisibles.
 
 
 * 0.3100   (2005-02-19)

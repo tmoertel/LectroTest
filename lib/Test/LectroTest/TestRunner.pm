@@ -474,7 +474,7 @@ sub details {
 
 sub label_frequencies {
     my $self = shift;
-    my $l = $self->labels || {} ;
+    my $l = $self->labels;
     my $total = $self->attempts;
     my @keys = sort { $l->{$b} <=> $l->{$a} } keys %$l;
     join( "\n",
@@ -551,7 +551,7 @@ sub retry {
 
 =pod
 
-=item label
+=item label(I<string>)
 
     Property {
       ##[ x <- Int ]##
@@ -569,7 +569,7 @@ L</labels> for more.
 
 sub label {
     my $self = shift;
-    my $labels = $self->labels || [];
+    my $labels = $self->labels;
     push @$labels, @_;
     $self->labels( $labels );
 }
@@ -679,6 +679,8 @@ sub dump {
 =back
 
 =cut
+
+
 
 package Test::LectroTest::TestRunner;
 

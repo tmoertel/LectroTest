@@ -8,7 +8,7 @@ use Filter::Util::Call;
 require Test::LectroTest::Property;
 require Test::LectroTest::Generator;
 
-our $VERSION = "0.3100";
+our $VERSION = "0.3200";
 
 =head1 NAME 
 
@@ -69,7 +69,7 @@ and I<y> that we bound to the generators earlier.  LectroTest
 automagically loads these lexically bound Perl variables with values
 behind the scenes.)
 
-B<Note:> If you want to use test functions like C<ok> from
+B<Note:> If you want to use testing assertions like C<ok> from
 L<Test::Simple> or C<is>, C<like>, or C<cmp_ok> from L<Test::More>
 (and the related family of L<Test::Builder>-based testing modules),
 see L<Test::LectroTest::Compat>, which lets you mix and match

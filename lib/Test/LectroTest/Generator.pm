@@ -279,7 +279,7 @@ sub Float(@) {
     # otherwise, provide a sizing-capable generator
     croak "the given range [$rlo,$rhi] does not contain zero "
         . "and cannot be used with a sized generator"
-        if 0 < $rlo || 0 > $rhi;
+        if $rlo > 0 || 0 > $rhi;
     return Gen {
         my ($lo, $hi) = ($rlo, $rhi);
         my $size = shift;
