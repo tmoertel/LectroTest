@@ -123,8 +123,7 @@ it with the necessary ingredients via named parameters:
 my $pkg = __PACKAGE__;
 
 sub new {
-    my $self   = shift;
-    my $class  = ref($self) || $self;
+    my $class = shift;
     croak "$pkg: invalid list of named parameters: (@_)"
         if @_ % 2;
     my %args  = @_;

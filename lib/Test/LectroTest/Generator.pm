@@ -119,8 +119,7 @@ our %defaults = (
 # methods
 
 sub new {
-    my $self   = shift;
-    my $class  = ref($self) || $self;
+    my $class = shift;
     return bless { @_ }, $class;
 }
 

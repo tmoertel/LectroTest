@@ -125,8 +125,7 @@ using accessors of the same name.  For example:
 =cut
 
 sub new { 
-    my $self = shift;
-    my $class = ref($self) || $self;
+    my $class = shift;
     return bless { %defaults, @_ }, $class; 
 }
 
