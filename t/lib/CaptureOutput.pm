@@ -45,17 +45,17 @@ sub capture {
 
     local *SAVED;
     local *TARGET = $target_fh;
-    open SAVED,  ">&TARGET"     or die "can't remember target";
-    open TARGET, ">&=$temp_fd"  or die "can't redirect target";
+    open SAVED,  ">&TARGET"     or die "can't remember target: $!";
+    open TARGET, ">&=$temp_fd"  or die "can't redirect target: $!";
     my $saved_fh = *SAVED;
 
     return sub {
-        seek $temp_fh, 0, 0 or die "can't seek";  # rewind
+        seek $temp_fh, 0, 0 or die "can't seek: $!";  # rewind
         my $captured_output = do { local $/; <$temp_fh> };
-        close $temp_fh or die "can't close temp file handle";
+        close $temp_fh or die "can't close temp file handle: $!";
         local (*SAVED, *TARGET) = ($saved_fh, $target_fh);
-        open TARGET, ">&SAVED"  or die "can't restore target";
-        close SAVED             or die "can't close SAVED";
+        open TARGET, ">&SAVED"  or die "can't restore target: $!";
+        close SAVED             or die "can't close SAVED: $!";
         return $captured_output;
     }
 }
