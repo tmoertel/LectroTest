@@ -8,14 +8,11 @@ Tom Moertel (tom@moertel.com)
 
 ** Improvements
 
-- Strings in counterexamples are now printed in double-quoted form.
-  This makes it easy to see invisibles.
-
-- You can now attach notes and variable values to trials.  In the
+- You can now attach notes and variable dumps to trials.  In the
   event the trial fails, the notes will be emitted as part of the
   counterexample to aid in debugging.
       See Test::LectroTest::TestRunner::testcontroller for the
-  documentation on the note() and dump() methods.
+  documentation on the new $tcon->note() and $tcon->dump() methods.
 
 ** Fixes
 

@@ -608,11 +608,22 @@ sub trivial {
 
 Adds a note (or notes) to the current trial.  In the event that the
 trial fails, these notes will be emitted as part of the
-counterexample.
+counterexample.  For example:
+
+    1..1
+    not ok 1 - property 'decode is encode's inverse' \
+        falsified in 68 attempts
+    #     Counterexample:
+    #     $s = "0";
+    #     Notes:
+    #     $s_enc     = "";
+    #     $s_enc_dec = "";
 
 Notes can help you debug your code when something goes wrong.  Use
-them as hints to yourself to aid in debugging.  For example, you can
-use notes to record the output of each stage of a multi-stage test.
+them as debugging hints to yourself.  For example, you can use notes
+to record the output of each stage of a multi-stage test.  That way,
+if the test fails, you can see what happened in each stage without
+having to plug the counterexample into your code under a debugger.
 
 If you want to include complicated values or data structures in your
 notes, see the C<dump> method, next, which may be more appropriate.
@@ -661,6 +672,7 @@ sub dump {
     my @names = $name ? ([$name]) : ();
     $self->note( Data::Dumper->new( [$val], @names )->Dump );
 }
+
 
 =pod
 
