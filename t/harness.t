@@ -9,7 +9,7 @@
 # The exit status should be equal to the number of failures or
 # 254, whichever is least.
 
-use File::Temp;
+use File::Temp 'tempfile';
 use Test::More tests => 6;
 
 BEGIN { unshift @INC, 't/lib'; }
@@ -31,14 +31,16 @@ for( [0,0,0], [0,1,1], [1,0,0], [1,1,1],
 
 sub make_and_run_suite {
     my ($successes, $failures) = @_;
-    my $fh = File::Temp->new() or die "can't open temp file";
+    my ($fh, $fn) = tempfile() or die "can't open temp file: $!";
     select((select($fh), $| = 1)[0]);
     print $fh
         "use Test::LectroTest;\n",
         ($prop_success) x $successes,
         ($prop_failure) x $failures;
-    my @cmd = ($^X, "-Ilib", $fh->filename);
+    my @cmd = ($^X, "-Ilib", $fn);
     my $recorder = capture(*STDOUT);
     my $exit_status = system(@cmd) >> 8;
+    close $fh or die "can't close temp file: $!";
+    unlink $fn;
     return "$exit_status\n" . $recorder->();
 }
