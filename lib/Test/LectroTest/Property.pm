@@ -449,7 +449,7 @@ Tom Moertel (tom@moertel.com)
 
 =head1 INSPIRATION
 
-The LectroTest project was inspired by Haskell's fabulous
+The LectroTest project was inspired by Haskell's
 QuickCheck module by Koen Claessen and John Hughes:
 http://www.cs.chalmers.se/~rjmh/QuickCheck/.
 

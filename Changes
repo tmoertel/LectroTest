@@ -16,7 +16,7 @@ Tom Moertel (tom@moertel.com)
 - Updated copyright notices.
 
 - Removed use of List::Util from t/001.t.  (This should be
-  the list use of the module.  Now we can cut the dependency.)
+  the last use of the module.  Now we can cut the dependency.)
 
 - Renamed the test .t files to something sensible.
 
