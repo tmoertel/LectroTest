@@ -1,0 +1,187 @@
+-*-Outline-*-
+
+LectroTest Change Log
+Tom Moertel (tom@moertel.com)
+
+
+* 0.20_10   (XXXXXXXXXX)
+
+** Improvements
+
+** Fixes
+
+- Removed use of List::Util from t/001.t.  (This should be
+  the list use of the module.  Now we can cut the dependency.)
+
+** Misc
+
+
+* 0.20_09   (2005-02-07)
+
+** Improvements
+
+- Now you can mix LectroTest and Test::* modules!
+  Test::LectroTest::Compat provides the compatiblity magic.
+
+** Fixes
+
+- Updated copyright notices.
+
+** Misc
+
+- Made list of dependencies in Build.PL pedantically complete.
+
+
+* 0.20_08   (2005-02-05)
+
+** Improvements
+
+- Paste can now be used to join elements of generated lists,
+  which are "flattened" before pasting.  For example, the
+  following are equivalent:
+      Paste( (Bool) x 4 )
+      Paste( List(Bool, length=>4) )
+
+- Removed dependency upon Data::Dumper's Sortkeys method and
+  upon List::Util entirely.  This makes LectroTest compatible with
+  older versions of Perl.  (I tested on v5.6.1 built for i386-linux.)
+  Thanks Alex Kapranoff for the Sortkeys dependency report.
+
+** Fixes
+
+- Minor clarifying edits to documentation.
+
+
+* 0.20_07   (2004-09-30)
+
+** Improvements
+
+- You can now specify multiple sets of generator-bindings for a
+  property.  This lets you focus on specific portions of your test
+  space to ensure the desired coverage.  For example, if you wanted
+  to cover all integers but especially focus on the range [-1,1]:
+
+  Property {
+      ##[ x <- Int ], [ x <- Int(range=>[-1,1]) ]##
+      blah($x) != 0
+  }, name => "blah result is non-zero" ;
+
+- Generator now accepts an :all export tag to export everything
+  (which is what I use almost all of the time).
+
+- If a generator throws an exception, it is caught and reported
+  specifically in a special warning counterexample.
+
+- Expanded test suite for TestRunner and Property.
+
+** Fixes
+
+- Some of the new combinators were listed under the :common
+  export tag instead of under :combinators.
+
+
+* 0.20_06  New combinators, doc fixes (2004-09-15)
+
+** Improvements
+
+- More new combinators that you can shake a stick at: 
+  Each, Apply, Map, Concat, Flatten, ConcatMap, FlattenMap.
+
+- As usual, documentation tweaks:
+  - Better explanation of sizing guidance (Generator)
+  - Added warnings about empty ranges, etc. (Generator)
+  - Documented the new combinators (Generator)
+
+- Additional pre-flight checks for Int and Float generators:
+  If a range is provided that does not contain zero, LectroTest
+  will complain if the generator is also sized (because the
+  run-time intersection of the sizing-guidance range and the
+  generator's range can be empty, making it impossible to
+  generate a valid value).
+
+
+** Fixes
+
+- Fixed an overly-uppity pre-flight check for List(length=>N).
+
+- Fixed TestRunner's modifying of $" in a way that escaped into the
+  behavior-test part of Properties during checks.
+
+
+* 0.20_05  Re-release of 0.20_04 to make CPAN happy (2004-09-13)
+
+- I once had a version in Test::LectroTest::Generator but removed it
+  because I wanted to version only the entire Test::LectroTest module.
+  But CPAN rejected Generator because its version had "fallen."  Crap.
+  So, back in goes the version number, now bumped.
+
+
+* 0.20_04  Documentation improvements, minor code improvements (2004-09-13)
+
+** Fixes
+
+- Some links in documentation were broken.
+
+** Improvements
+
+- Vastly improved docs: All modules now have decent documentation.
+  (Tutorial still needs step-by-steps, tho.)
+
+- More pre-flight checks and better error reporting.
+
+- Cleaned up Test::LectroTest's hack for running property checks and
+  end of load.
+
+
+* 0.20_03  Bugfix and doc improvements (2004-09-11)
+
+** Fixes
+
+- !! Important fix: In generator bindings with more than one variable,
+  variables sometimes got each others' values.  
+
+** Improvements
+
+- Updated docs.
+
+- LectroTest::Property now pre-flight checks for the use of $tcon in a
+  generator binding and emits and error in that case.  ($tcon is used
+  for the test controller.)
+
+- TestRunner will now catch and report exceptions thrown during
+  property checks:
+
+  - A thrown exception results in test failure.
+
+  - The "details" report will include a "Caught exception" section,
+    if needed.
+
+  - TestRunner::results now has an exception field:
+    - undef if no exception was thrown during testing
+    - the exception otherwise
+
+
+* 0.20_02  Documentation improvements (2004-09-09)
+
+- Added README (d'oh!) from Test::LectroTest.
+- Updated docs in Test::LectroTest.
+
+
+* 0.20_01  First Pre-CPAN upload release (2004-09-09)
+
+- Major documentation improvements
+
+- Lots of cleanups
+
+- Reorg under Test:
+  LectroTest::*      -> Test::LectroTest::*
+  LectroTest::Simple -> Test::LectroTest
+
+
+* 0.10_02  First public release (2004-09-08)
+
+- Clean ups
+
+
+* 0.10_01  First cut
+

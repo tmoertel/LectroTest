@@ -1,0 +1,42 @@
+* Talking points
+
+** Statistical testing
+
+Tell story about how a statistical randomg testing turned up a problem
+in Int.  You ran 100,000-value trials in each of several tests.  Three
+of the tests involved generating integers from ranges of negative
+numbers, e.g., [-300,-100].  You expected the mean of the distribution
+to be the exact center (-200) but it was in fact slightly larger
+(about 201), a fact you didn't detect until you had raised the sample
+size from 10,000 to 100,000.  Only then did you have sufficient
+samples to conclude that the difference of just 1 was significant.
+Inspection of the code revealed the problem:
+
+    my $span = $rhi - $rlo + 1;
+    return Gen {
+        return int($rlo + rand($span));
+    };
+
+Note that int(X) always rounds X toward 0.  But for our purposes
+we must always round toward -Infinity.  Therefore, when X is
+negative and fractional, we round in the wrong direction.  So,
+when we thought we were generating random integers in the
+range [-300,-100] we were really using the range [-299,-99].
+The fix is to replace int(X) with floor(X) or ensure that
+X is always non-negative:
+
+    my $span = $rhi - $rlo + 1;
+    return Gen {
+        return $rlo + int(rand($span));
+    };
+
+** Errors caught
+
+- $length should have been (defined $length) in String builder
+  - caught by test suite
+
+
+
+Local variables:
+mode: outline
+End:

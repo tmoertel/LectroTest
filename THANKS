@@ -1,0 +1,17 @@
+-*- Outline -*-
+
+* A BIG THANKS TO THE FOLLOWING GREAT PEOPLE
+
+- Koen Claessen and John Hughes for creating QuickCheck
+  for the Haskell programming language and providing the
+  inspiration for LectroCheck
+
+- Jacob Matthews for his constant Scheming (hee, hee)
+  and for his excellent suggestions
+
+- Casey West, Chris Winters, Dan Wright, and the rest of the
+  Pittsburgh Perl Mongers for continuing support, suggestions, and
+  abundant, all-around coolness
+
+--
+Tom Moertel <tom@moertel.com>
