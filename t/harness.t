@@ -32,15 +32,14 @@ for( [0,0,0], [0,1,1], [1,0,0], [1,1,1],
 sub make_and_run_suite {
     my ($successes, $failures) = @_;
     my ($fh, $fn) = tempfile() or die "can't open temp file: $!";
-    select((select($fh), $| = 1)[0]);
     print $fh
         "use Test::LectroTest;\n",
         ($prop_success) x $successes,
         ($prop_failure) x $failures;
+    close $fh or die "can't close temp file: $!";
     my @cmd = ($^X, "-Ilib", $fn);
     my $recorder = capture(*STDOUT);
     my $exit_status = system(@cmd) >> 8;
-    close $fh or die "can't close temp file: $!";
     unlink $fn;
     return "$exit_status\n" . $recorder->();
 }
