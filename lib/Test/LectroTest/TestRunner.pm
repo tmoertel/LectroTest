@@ -487,6 +487,7 @@ sub counterexample {
     my $sorted_keys = [ sort keys %$vars ];
     no warnings 'once';
     local $Data::Dumper::Sortkeys = 1;
+    local $Data::Dumper::Useqq    = 1;
     return Data::Dumper->new([@$vars{@$sorted_keys}], $sorted_keys)->Dump;
 }
 

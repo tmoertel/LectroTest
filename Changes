@@ -4,6 +4,17 @@ LectroTest Change Log
 Tom Moertel (tom@moertel.com)
 
 
+* 0.3200   (XXXXXXXXXX)
+
+** Improvements
+
+- Strings in counterexamples are now printed in double-quoted form.
+  This makes it easy to see invisibles.
+
+** Fixes
+
+
+
 * 0.3100   (2005-02-19)
 
 - This release is identical to 0.3000 except that for this release I
