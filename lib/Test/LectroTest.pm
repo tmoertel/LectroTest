@@ -119,6 +119,14 @@ On the other hand, if you're not so lucky:
   # $x = -34
   # $y = 0
 
+=head1 EXIT CODE
+
+The exit code returned by running a suite of property checks is the
+number of failed checks.  The code is 0 if all properties passed their
+checks or I<N> if I<N> properties failed. (If more than 254 properties
+failed, the exit code will be 254.)
+
+
 =head1 ADJUSTING THE TESTING PARAMETERS
 
 There is one testing parameter that you may wish to change: The number
@@ -164,10 +172,13 @@ sub import {
 }
 
 sub run {
-    $r->run_suite( @props, @opts ) if @props;
+    return @props - $r->run_suite( @props, @opts );
 }
 
-END { Test::LectroTest::run() }
+END {
+    my $failed = Test::LectroTest::run();
+    $? = $failed > 254 ? 254 : $failed;
+}
 
 1;
 

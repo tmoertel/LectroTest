@@ -249,8 +249,8 @@ sub run {
 
 =head2 run_suite(I<properties>...)
 
-  my $all_success = $runner->run_suite( @properties );
-  if ($all_success) {
+  my $num_successful = $runner->run_suite( @properties );
+  if ($num_successful == @properties) {
       # celebrate most jubilantly!
   }
 
@@ -272,6 +272,7 @@ parameter after all of the properties in the argument list:
 
   my $num_successes = $runner->run_suite( @properties,
                                           verbose => 1 );
+  my $num_failed = @properties - $num_successes;
 
 =cut
 
