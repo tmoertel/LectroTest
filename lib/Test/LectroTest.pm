@@ -69,7 +69,7 @@ and I<y> that we bound to the generators earlier.  LectroTest
 automagically loads these lexically bound Perl variables with values
 behind the scenes.)
 
-B<NOTE:> If you want to use test functions like C<ok> from
+B<Note:> If you want to use test functions like C<ok> from
 L<Test::Simple> or C<is>, C<like>, or C<cmp_ok> from L<Test::More>
 (and the related family of L<Test::Builder>-based testing modules),
 see L<Test::LectroTest::Compat>, which lets you mix and match
@@ -95,7 +95,7 @@ example.)  When you run the program, LectroTest will load the property
 (and any others in the file) and check it by running random trials
 against the software you're testing.
 
-B<NOTE:> If you want to place LectroTest property checks into
+B<Note:> If you want to place LectroTest property checks into
 a test plan managed by L<Test::Builder>-based modules such as
 L<Test::Simple> or L<Test::More>, see L<Test::LectroTest::Compat>.
 
@@ -129,10 +129,10 @@ failed, the exit code will be 254.)
 
 =head1 ADJUSTING THE TESTING PARAMETERS
 
-There is one testing parameter that you may wish to change: The number
-of trials to run against each property checked.  By default it is
-1,000.  If you want to try more or fewer trials, pass the
-C<trials=E<gt>>I<N> flag:
+There is one testing parameter (among others) that you might wish to
+change from time to time: the number of trials to run for each
+property checked.  By default it is 1,000.  If you want to try more or
+fewer trials, pass the C<trials=E<gt>>I<N> flag:
 
   use Test::LectroTest trials => 10_000;
 
