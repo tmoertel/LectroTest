@@ -1,25 +1,23 @@
 * Key
 
 X = Done
+C = Canceled
+- = Pending
 
 * Development stuff
 
-- Rename tests from 00x.t to something more meaningful
-- Remove DataDumper Sortkeys dependency (more backward compatible)
+X Rename tests from 00x.t to something more meaningful
+X Remove DataDumper Sortkeys dependency (more backward compatible)
 
 * Improvements
-
-- Let each property optionally specify how many times it is
-  to be tested:  Property { ... } name => ..., trials => 100;
-
 
 X Make Paste combinator accept List arguments (via concat).
 
 X Multiple generator-bindings per Property to allow for
   focusing on certain subpaces of the haystack:
     ##[ [ x <- Int ], [ x <- Int(range=>[-1,1]) ]##
-  - all bindings must have identical sets of variables
-  - test runner runs a full set of trials against each binding
+  X all bindings must have identical sets of variables
+  X test runner runs a full set of trials against each binding
 
 X Better handling of errors caught durring testing
   X Include "Error caught: $@" in output.
@@ -74,7 +72,7 @@ X Rename for better harmony with the global Perl namespace:
 
 - Set version to something sensible
 
-* Todo
+* Old stuff
 
 X Replace Char's range=>[] w/ charset=>"".
 
@@ -82,6 +80,9 @@ X Test case $t
     return $t->redo; # if random vars don't satisfy test preconditions
     $t->label("zero") if $x == 0;
     $t->trivial       if $x == 0 && $y == 0;
+
+C Let each property optionally specify how many times it is
+  to be tested:  Property { ... } name => ..., trials => 100;
 
 
 Local variables:
