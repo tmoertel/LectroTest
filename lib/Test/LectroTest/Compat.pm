@@ -100,7 +100,7 @@ sub holds {
     $details =~ s/^.*?\n//;     # remove summary line
     $details =~ s/^\# /    /mg; # replace commenting w/ indent
     $Test->diag($details) if $details;
-    return $success;
+    return $success ? 1 : 0;    # same result policy as Test::Builder::ok
 }
 
 sub check_property {
@@ -108,8 +108,8 @@ sub check_property {
     no warnings;
     my $diag_store = [];
     my $property = shift;
-    local *Test::Builder::ok = \&disconnected_ok;
-    local *Test::Builder::diag = sub { shift; push @$diag_store, @_ };
+    local *Test::Builder::ok   = \&disconnected_ok;
+    local *Test::Builder::diag = sub { shift; push @$diag_store, @_; 0 };
     return ( $diag_store, 
              Test::LectroTest::TestRunner->new(@_)->run($property) );
 }
