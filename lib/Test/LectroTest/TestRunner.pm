@@ -521,7 +521,15 @@ struct ( labels => '$', retried => '$' );
 
 Stops the current trial and tells the TestRunner to re-try it
 with new inputs.  Typically used to reject a particular case
-of inputs that doesn't make for a good or valid test.
+of inputs that doesn't make for a good or valid test.  While
+not required, you will probably want to call C<$tcon-E<gt>retry>
+as part of a C<return> statement to prevent further execution
+of your property's logic, the results of which will be thrown
+out should it run to completion.
+
+The return value of C<$tcon-E<gt>retry> is itself meaningless; it is
+the side-effect of calling it that causes the current trial to be
+thrown out and re-tried.
 
 =cut
 
