@@ -8,7 +8,7 @@ use Filter::Util::Call;
 require Test::LectroTest::Property;
 require Test::LectroTest::Generator;
 
-our $VERSION = "0.3200";
+our $VERSION = "0.3300";
 
 =head1 NAME 
 

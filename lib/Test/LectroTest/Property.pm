@@ -138,7 +138,7 @@ sub new {
             if ref($inputs) ne "ARRAY" || @$inputs % 2;
         $inputs = { @$inputs };
         croak "$pkg: cannot use reserved name 'tcon' in a generator binding"
-            if grep { 'tcon' eq $_ } keys %$inputs;
+            if defined $inputs->{tcon};
         my @vars = sort keys %$inputs;
         croak "$pkg: each set of generator bindings must bind the same "
             . "set of variables but (@vars) does not match ($last_vars)"
