@@ -46,9 +46,9 @@ automatically by L<Test::LectroTest>.  A Property is a specification
 of your software's required behavior over a given set of conditions.
 The set of conditions is given by a generator-binding
 specification. The required behavior is defined implicitly by a block
-of code that tests your software's observed behavior for a given set
-of generated conditions against the expected behavior and either
-accepts or rejects the observed behavior.
+of code that tests your software for a given set of generated
+conditions; if your software matches the expected behavor, the
+block of code returns true; otherwise, false.
 
 This documentation serves as reference documentation for LectroTest
 Properties.  If you don't understand the basics of Properties yet,
@@ -212,7 +212,7 @@ Sometimes you may want to repeat a property check with multiple sets
 of generator bindings.  This can happen, for instance, when your
 condition space is vast and you want to ensure that a particular
 portion of it receives focused coverage while still sampling the
-overall space.  For times like this, you can list specify multiple
+overall space.  For times like this, you can list multiple
 sets of bindings within the C<##[> and C<]##> delimiters, like so:
 
   ##[ var1 <- gen1A, ... ],
@@ -237,7 +237,7 @@ thing is illegal:
   ##[ x <- Int ], [ y <- Int ]##
 
 The above is illegal because both sets of bindings must use I<x> or
-both must use I<y>; they can't each use a different variable name.
+both must use I<y>; they can't each use a different variable.
 
   ##[ x <- Int             ],
     [ x <- Int, y <- Float ]##
@@ -301,9 +301,17 @@ inputs you were given at first)
 
 =item *
 
-add a label to the current trial for reporting purposes
+add labels to the current trial for reporting purposes
+
+=item *
+
+attach notes and variable dumps to the current trial for diagnostic
+purposes, should the trial fail
 
 =back
+
+(For the full details of what you can do with C<$tcon> see
+the "testcontroller" section of L<Test::LectroTest::TestRunner>.)
 
 For example, let's say that we have written a function C<my_sqrt> that
 returns the square root of its input.  In order to check whether our
