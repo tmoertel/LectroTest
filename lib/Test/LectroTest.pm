@@ -176,8 +176,10 @@ sub run {
 }
 
 END {
-    my $failed = Test::LectroTest::run();
-    $? = $failed > 254 ? 254 : $failed;
+    if ($r) {
+        my $failed = Test::LectroTest::run();
+        $? = $failed > 254 ? 254 : $failed;
+    }
 }
 
 1;
