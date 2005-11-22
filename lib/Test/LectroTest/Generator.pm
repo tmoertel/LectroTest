@@ -754,7 +754,7 @@ unchanged to each sub-generator.
 B<Note:> This combinator does not accept modifiers.
 
 (Note for technical buffs: C<Each(...)> is exactly equivalent to
-C<List(..., length=E<gt>1>).
+C<List(..., length=E<gt>1)>).
 
 =cut
 
