@@ -67,3 +67,8 @@ Property {
     ##[ r <- Unit(1), a <- Unit(2), w <- Unit(3), t <-Unit(4) ]##
     $r == 1 && $a == 2 && $w == 3 && $t == 4;
 }, name => "argument order is preserved (2)";
+
+Property {
+    ##[ f <- Float ]##
+    $tcon->dump( $f, "f" ) == $f;
+}, name => "tcon->dump returns its value arg as its result";

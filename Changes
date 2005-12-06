@@ -3,6 +3,14 @@
 LectroTest Change Log
 Tom Moertel (tom@moertel.com)
 
+* 0.3400   (XXXX-XX-XX)
+
+** Improvements
+
+- $tcon->dump( val, ... ) now returns val as its result so that
+  the method call can be used to record values in passing.
+
+
 * 0.3300   (2005-07-20)
 
 ** Fixes

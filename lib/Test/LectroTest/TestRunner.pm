@@ -654,10 +654,12 @@ sub note {
 Adds a note to the current trial in which the given I<value> is
 dumped.  The value will be dumped via L<Data::Dumper> and thus may
 be complex and contain weird control characters and so on.  If you
-supply a I<name>, it will be used to name the dumped value.
+supply a I<name>, it will be used to name the dumped value.  Returns
+I<value> as its result.
 
 In the event that the trial fails, the note (and any others) will be
 emitted as part of the counterexample.
+
 
 See C<note> above for more.
 
@@ -671,6 +673,7 @@ sub dump {
     local $Data::Dumper::Indent   = 0;
     my @names = $name ? ([$name]) : ();
     $self->note( Data::Dumper->new( [$val], @names )->Dump );
+    return $val;
 }
 
 
