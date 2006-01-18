@@ -17,6 +17,8 @@ t/compat.t
 t/docs-eg.t
 t/gens.t
 t/harness.t
+t/pod-coverage.t
+t/pod.t
 t/props.t
 t/props2.t
 t/runner.t

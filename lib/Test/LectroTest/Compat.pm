@@ -88,11 +88,11 @@ sub import {
     $Test->plan(@_);
     Test::LectroTest::Property->export_to_level(1, $self);
     Test::LectroTest::Generator->export_to_level(1, $self, ':all');
-    filter_add(Test::LectroTest::Property->make_code_filter);
+    filter_add(Test::LectroTest::Property->_make_code_filter);
 }
 
 sub holds {
-    my ($diag_store, $results) = check_property(@_);
+    my ($diag_store, $results) = _check_property(@_);
     my $success = $results->success;
     (my $name = $results->summary) =~ s/^.*?- /property /;
     $Test->ok($success, $name);
@@ -104,11 +104,11 @@ sub holds {
     return $success ? 1 : 0;    # same result policy as Test::Builder::ok
 }
 
-sub check_property {
+sub _check_property {
     no warnings 'redefine';
     my $diag_store = [];
     my $property = shift;
-    local *Test::Builder::ok   = \&disconnected_ok;
+    local *Test::Builder::ok   = \&_disconnected_ok;
     local *Test::Builder::diag = sub { shift; push @$diag_store, @_; 0 };
     return ( $diag_store, 
              Test::LectroTest::TestRunner->new(@_)->run($property) );
@@ -118,7 +118,7 @@ sub check_property {
 # ok() method when we want to disable T::B's
 # test harness
 
-sub disconnected_ok { $_[1] ? 1 : 0 }
+sub _disconnected_ok { $_[1] ? 1 : 0 }
 
 
 1;

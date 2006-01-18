@@ -131,13 +131,13 @@ sub generate {
 #==============================================================================
 # helpers
 
-sub defargs {
+sub _defargs {
     my $gen_name = shift;
     shift while ref($_[0]);  # skip template, if any
     return { %{$defaults{$gen_name}}, @_  };
 }
 
-sub template {
+sub _template {
     my $tmpl = [];
     push @$tmpl, shift while ref($_[0]);
     return $tmpl;
@@ -201,7 +201,7 @@ Otherwise, the generated values are constrained only by the range.
 =cut
 
 sub Int(@) {
-    my $args = defargs("Int", @_);
+    my $args = _defargs("Int", @_);
     my ($sized, $rlo, $rhi) = ($args->{sized}, map int, @{$args->{range}});
     croak "range=>[$rlo,$rhi] is empty" if $rlo > $rhi;
     if (!$sized) {
@@ -266,7 +266,7 @@ Otherwise, the generated values are constrained only by the range.
 =cut
 
 sub Float(@) {
-    my $args = defargs("Float", @_);
+    my $args = _defargs("Float", @_);
     my ($sized, $rlo, $rhi) = ($args->{sized}, @{$args->{range}});
     croak "range=>[$rlo,$rhi] is empty" if $rlo > $rhi;
     if (!$sized) {
@@ -368,23 +368,23 @@ a range of characters.
 
 =cut
 
-sub to_range($) {
+sub _to_range($) {
     my ($lo, $hi) = @{shift()}[0,1];
     [ map {chr} ord$lo .. ord $hi ]
 }
 
-sub parse_charset($) {
+sub _parse_charset($) {
     local ($_) = @_;
     my @ranges;
     while (/(.)(?:-(.))?/sg) {
         push @ranges, [$1, defined $2 ? $2 : $1];
     }
-    [ sort keys %{{ map {($_,1)} map {@{to_range($_)}} @ranges }} ]
+    [ sort keys %{{ map {($_,1)} map {@{_to_range($_)}} @ranges }} ]
 }
 
 sub Char(@) {
-    my $cset = defargs("Char", @_)->{charset};
-    return Elements( @{ parse_charset($cset) } )
+    my $cset = _defargs("Char", @_)->{charset};
+    return Elements( @{ _parse_charset($cset) } )
 }
 
 =pod
@@ -434,7 +434,7 @@ example, providing two generators will create double-length lists.
 
 
 sub List(@) {
-    my $template = template(@_);
+    my $template = _template(@_);
     my $builder = sub {
         my ($len, $size) = @_;
         my $subsize = defined $size ? $size / ($len+1) : 1;
@@ -449,7 +449,7 @@ sub List(@) {
 
     # return generator customized for length specification
 
-    my $lenspec = defargs("List", @_)->{length};
+    my $lenspec = _defargs("List", @_)->{length};
 
     # case 0: length=>undef
     if ( ! defined $lenspec ) {
@@ -518,7 +518,7 @@ collision.
 
 sub Hash(@) {
     croak "Hash(keygen,valgen,...) requires two generators"
-        unless @{template(@_)} == 2;
+        unless @{_template(@_)} == 2;
     my $listgen = List(@_);
     return Gen {
         return { @{$listgen->generate(@_)} }
@@ -556,7 +556,7 @@ I<length-spec> syntax as for the List generator.
 =cut
 
 sub String(@) {
-    my $args = defargs("String", @_);
+    my $args = _defargs("String", @_);
     my ($cset, $length) = @$args{qw(charset length)};
     my $lcgen = List(Char(defined $cset ? (charset=>$cset) : ()),
                      defined $length ? (length=>$length) : ());
@@ -655,8 +655,8 @@ be passed unchanged to each of the sub-generators.
 =cut
 
 sub Paste(@) {
-    my @gens = @{template(@_)};
-    my $glue = defargs("Paste", @_)->{glue};
+    my @gens = @{_template(@_)};
+    my $glue = _defargs("Paste", @_)->{glue};
     Apply( sub { join $glue, map @$_, @_ }, Flatten(@gens) );
 }
 
@@ -819,7 +819,7 @@ B<Note:> This combinator does not accept modifiers.
 
 =cut
 
-sub Map_ {
+sub _Map {
     my $f = shift;
     my $g = Each( @_ );
     return Gen {
@@ -828,7 +828,7 @@ sub Map_ {
 }
 
 sub Map(&@) {
-    Map_(@_);
+    _Map(@_);
 }
 
 =pod
@@ -857,12 +857,12 @@ B<Note:> This combinator does not accept modifiers.
 
 # we'll use this helper in Flatten and ConcatMap (and Paste)
 
-sub concat(@) {
+sub _concat(@) {
     [ map { ref($_) ? @{$_} : ($_) } @_ ];
 }
 
 sub Concat(@) {
-    Apply( \&concat, @_ );
+    Apply( \&_concat, @_ );
 }
 
 
@@ -888,12 +888,12 @@ B<Note:> This combinator does not accept modifiers.
 
 =cut
 
-sub flatten(@) {
-    concat map { ref($_) ? flatten(@$_) : ($_) } @_ ;
+sub _flatten(@) {
+    _concat map { ref($_) ? _flatten(@$_) : ($_) } @_ ;
 }
 
 sub Flatten(@) {
-    Apply( \&flatten, @_ );
+    Apply( \&_flatten, @_ );
 }
 
 =pod
@@ -924,9 +924,9 @@ B<Note:> This combinator does not accept modifiers.
 =cut
 
 sub ConcatMap(&@) {
-    my $g = Map_( @_ );
+    my $g = _Map( @_ );
     return Gen {
-        concat @{ $g->generate( @_ ) };
+        _concat @{ $g->generate( @_ ) };
     };
 }
 
@@ -957,9 +957,9 @@ B<Note:> This combinator does not accept modifiers.
 =cut
 
 sub FlattenMap(&@) {
-    my $g = Map_( @_ );
+    my $g = _Map( @_ );
     return Gen {
-        flatten @{ $g->generate( @_ ) };
+        _flatten @{ $g->generate( @_ ) };
     };
 }
 

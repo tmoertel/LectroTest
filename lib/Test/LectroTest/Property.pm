@@ -371,30 +371,30 @@ sub import {
     Test::LectroTest::Property->export_to_level(
         1, grep {$_ ne NO_FILTER} @_ );
     return if grep {$_ eq NO_FILTER} @_;
-    filter_add( make_code_filter() );
+    filter_add( _make_code_filter() );
 }
 
-sub make_code_filter {
+sub _make_code_filter {
     my $content = "";
     sub {
         my $status = shift;
         if ( defined $status ? $status : ($status = filter_read()) ) {
             if (s| \#\# ( \[ .*?  ) \#*\s*\]\#\# |
-                   "[".binding($1)."]]}".body($1) |exs) {
+                   "["._binding($1)."]]}"._body($1) |exs) {
                 # 1-line decl
             }
-            elsif (s| \#\# ( \[.* ) | "[".binding($1) |exs) {
+            elsif (s| \#\# ( \[.* ) | "["._binding($1) |exs) {
                 # opening of multi-line decl
                 $content .= " $1";
             }
             elsif ($content && 
                    s| ^(.*?)\#*\s*\]\#\# |
-                      binding($1)."]]}".body("$content$1") |exs) {
+                      _binding($1)."]]}"._body("$content$1") |exs) {
                 # close of multi-line decl
                 $content = "";
             }
             elsif ($content) {
-                s/(.*)/binding($1)/es;
+                s/(.*)/_binding($1)/es;
                 $content .= " $1";
             }
         }
@@ -404,13 +404,13 @@ sub make_code_filter {
 
 # convert bindinging operators ( <- ) into key arrows ( => )
 
-sub binding {
+sub _binding {
     my $s = shift;
     $s =~ s| <- | => |gx;
     return $s;
 }
 
-sub body {
+sub _body {
     my ($gen_decl_str) = @_;
     my @vars = $gen_decl_str =~ /(\w+)\s*<-/gs;
     @vars = sort keys %{{ map {($_,1)} @vars }}; # uniq | sort
