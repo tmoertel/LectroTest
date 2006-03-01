@@ -158,8 +158,7 @@ our @opts;
 sub import {
     my $self = shift;
     Test::LectroTest::Property->export_to_level(1, $self);
-    Test::LectroTest::Generator->export_to_level(
-        1, $self, qw(:all) );
+    Test::LectroTest::Generator->export_to_level(1, $self, ':all');
     @opts = @_;
     $r = Test::LectroTest::TestRunner->new( @_ );
     my $lines = 0;

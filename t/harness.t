@@ -22,10 +22,10 @@ for( [0,0,0], [0,1,1], [1,0,0], [1,1,1],
      [0,254,254], [0,300,254] )
 {
     my ($s, $f)  = @$_;  # successes, failures, 
-    my $results  = make_and_run_suite( $s, $f );
-    my $oks      = grep 1, $results =~/^ok/mg;
-    my $noks     = grep 1, $results =~/^not ok/mg;
-    my ($status) = $results =~/^(.*)/;
+    my $results  = make_and_run_suite($s, $f);
+    my $oks      = grep 1, $results =~ /^ok/mg;
+    my $noks     = grep 1, $results =~ /^not ok/mg;
+    my ($status) = $results =~ /^(.*)/;
     is_deeply( [$oks, $noks, $status], $_, "suite @$_" );
 }
 

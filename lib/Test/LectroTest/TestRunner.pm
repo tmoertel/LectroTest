@@ -27,13 +27,13 @@ Test::LectroTest::TestRunner - Configurable Test::Harness-compatible engine for 
 
  # test a suite of properties, w/ Test::Harness output
  my $num_successful = $runner->run_suite( @properties );
- print "Splendid!" if $num_successful;
+ print "All passed!" if $num_successful == @properties;
 
 =head1 DESCRIPTION
 
 B<STOP!> If you just want to write and run simple tests, see
-L<Test::LectroTest>.  If you really want to learn about or turn the
-control knobs of the property-checking apparatus, read on.
+L<Test::LectroTest>.  If you really want to learn about the
+property-checking apparatus or turn its control knobs, read on.
 
 This module provides Test::LectroTest::TestRunner, a class of objects
 that tests properties by running repeated random trials.  You create a
@@ -126,9 +126,9 @@ using accessors of the same name.  For example:
 
 =cut
 
-sub new { 
+sub new {
     my $class = shift;
-    return bless { %defaults, @_ }, $class; 
+    return bless { %defaults, @_ }, $class;
 }
 
 =pod
@@ -191,16 +191,16 @@ sub run {
             # run a trial
 
             $base_size++;
-            my $controller=Test::LectroTest::TestRunner::testcontroller->new();
+            my $controller=Test::LectroTest::TestRunner::testcontroller->new;
             my $size = $scalefn->($base_size);
             my $inputs = { "WARNING" => "EXCEPTION FROM WITHIN GENERATOR" };
             my $success = eval {
                 $inputs = { map {($_, $gen_specs->{$_}->generate($size))}
                             @vars };
                 $testfn->($controller, @$inputs{@vars});
-            }; 
+            };
 
-            # did the trial bail out owing to an exception?
+            # did the trial bail out because of an exception?
 
             $results->exception( do { my $ex=$@; chomp $ex; $ex } ) if $@;
 
@@ -216,7 +216,7 @@ sub run {
                 redo;  # re-run the trial w/ new inputs
             }
 
-            # the trial ran to completation, so count the attempt
+            # the trial ran to completion, so count the attempt
 
             $attempts++;
 
@@ -372,7 +372,7 @@ combination of labels to the count of trials that had that particular
 combination.  Otherwise, it will be undefined.
 
 Note that each trial is counted only once -- for the I<most-specific>
-combination of labels that were applied to it.  For example, consider
+combination of labels that was applied to it.  For example, consider
 the following labeling logic:
 
   Property {
@@ -380,7 +380,7 @@ the following labeling logic:
     $tcon->label("negative") if $x < 0;
     $tcon->label("odd")      if $x % 2;
     1;
-  }, name => "negative/odd";
+  }, name => "negative/odd labeling example";
 
 For a particular trial, if I<x> was 2 (positive and even), the trial
 would receive no labels.  If I<x> was 3 (positive and odd), the trial
@@ -401,7 +401,7 @@ The corresponding output looks like this:
   25% negative & odd
   25% odd
 
-If no labels were applied, an empty string is returned.  
+If no labels were applied, an empty string is returned.
 
 =item exception
 
@@ -501,7 +501,7 @@ sub notes {
     return $notes ? join("\n", "Notes:", @$notes, "") : "";
 }
 
-=pod 
+=pod
 
 =head2 Test::LectroTest::TestRunner::testcontroller
 
@@ -526,7 +526,7 @@ struct ( labels => '$', retried => '$', notes => '$' );
 
     Property {
       ##[ x <- Int ]##
-      return $tcon->retry if $x == 0; 
+      return $tcon->retry if $x == 0;
     }, ... ;
 
 
@@ -555,8 +555,8 @@ sub retry {
 
     Property {
       ##[ x <- Int ]##
-      $tcon->label("negative") if $x < 0; 
-      $tcon->label("odd")      if $x % 2; 
+      $tcon->label("negative") if $x < 0;
+      $tcon->label("odd")      if $x % 2;
     }, ... ;
 
 Applies a label to the current trial.  At the end of the trial, all of
@@ -580,13 +580,13 @@ sub label {
 
     Property {
       ##[ x <- Int ]##
-      $tcon->trivial if $x == 0; 
+      $tcon->trivial if $x == 0;
     }, ... ;
 
 Applies the label "trivial" to the current trial.  It is identical to
 calling C<label> with "trivial" as the argument.
 
-=cut 
+=cut
 
 sub trivial {
     shift->label("trivial");
@@ -696,7 +696,7 @@ you can put inside of your property specifications.
 
 =head1 LECTROTEST HOME
 
-The LectroTest home is 
+The LectroTest home is
 http://community.moertel.com/LectroTest.
 There you will find more documentation, presentations, mailing-list archives, a wiki,
 and other helpful LectroTest-related resources.  It's also the
@@ -714,7 +714,7 @@ http://www.cs.chalmers.se/~rjmh/QuickCheck/.
 
 =head1 COPYRIGHT and LICENSE
 
-Copyright (c) 2004-05 by Thomas G Moertel.  All rights reserved.
+Copyright (c) 2004-06 by Thomas G Moertel.  All rights reserved.
 
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
