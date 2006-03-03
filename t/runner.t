@@ -3,7 +3,9 @@
 use warnings;
 use strict;
 
-use Test::More tests => 26;
+use File::Temp;
+
+use Test::More tests => 28;
 use Test::LectroTest::Generator ':all';
 use Test::LectroTest::Property;
 use Test::LectroTest::TestRunner;
@@ -276,18 +278,6 @@ Now we check to see whether the verbosity indicator is respected.
 
 # this sub captures the output for a suite of property checks
 
-sub is_prop {
-    ref $_[0] eq 'Test::LectroTest::Property';
-}
-
-sub check_suite {
-    my @props = grep  is_prop($_), @_;
-    my @opts  = grep !is_prop($_), @_;
-    my $recorder = capture(*STDOUT);
-    Test::LectroTest::TestRunner->new(@opts)->run_suite(@props);
-    return $recorder->();
-}
-
 for ([1, \&like, "does"], [0, \&unlike, "does not"]) {
     my ($verbose, $testfn, $does) = @$_;
 
@@ -310,6 +300,86 @@ for ([1, \&like, "does"], [0, \&unlike, "does not"]) {
                , qr/counterexample/i,
                , "verbose=>$verbose $does include counterexample"
     );
+}
+
+
+=pod
+
+=head2 FAILURE RECORDING
+
+Now we check to see if we can record failures and play them
+back as regression tests.
+
+=cut
+
+{
+    my $tmp       = File::Temp->new();
+
+    my @vals;
+    my $prop_fail = Property { ##[ x <- Int ]## push @vals, $x; 0 };
+    my $prop_succ = Property { ##[ x <- Int ]## push @vals, $x; 1 };
+
+    my $checkit = sub {
+        my $prop = shift;
+        check_suite(($prop) x 10, trials => 1, @_);
+    };
+
+    # record ten failures into the regression file and save the
+    # values of x for each in @vals
+
+    $checkit->($prop_fail, record_failures => $tmp->filename);
+    my @recorded_vals = @vals;
+    @vals = ();
+
+    # check ten successful properties using the regression file from
+    # earlier; because these properties have the same name as the
+    # failing properties checked above ("Unnamed"), the ten recorded
+    # failure cases will be tried for each of these properties, in
+    # addition to the one random case that would normally be tried
+    # for each
+
+    $checkit->($prop_succ, playback_failures => $tmp->filename);
+
+    # now @vals should contain 10 played-back failues and 1 random
+    # trial for *each* for the ten successful property checks; here we
+    # remove the random-trial value for each property check so
+    # that we may compare the played back recording to the original
+
+    splice(@vals, 11 * $_ + 10, 1) for reverse 0..9;
+    is_deeply( \@vals,
+              [ (@recorded_vals) x 10 ],
+              "recorded failures are played back as regression tests" );
+
+
+    my $prop_newname = Property { ##[ x <- Int ]## push @vals, $x; 1 },
+                       name => "a new name";
+    @vals = ();
+    $checkit->($prop_newname, playback_failures => $tmp->filename);
+    is( scalar @vals, 10,
+        "failures recorded for a different prop are ignored" );
+
+}
+
+
+=pod
+
+=head2 HELPER FUNCTIONS
+
+The following helper checks the given properties as a suite
+and returns the test output as a string.
+
+=cut
+
+sub check_suite {
+    my @props = grep  is_prop($_), @_;
+    my @opts  = grep !is_prop($_), @_;
+    my $recorder = capture(*STDOUT);
+    Test::LectroTest::TestRunner->new(@opts)->run_suite(@props);
+    return $recorder->();
+}
+
+sub is_prop {
+    ref $_[0] eq 'Test::LectroTest::Property';
 }
 
 

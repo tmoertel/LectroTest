@@ -4,10 +4,29 @@ LectroTest Change Log
 Tom Moertel (tom@moertel.com)
 
 
-* 0.3500   (XXXX-XX-XX)
+* 0.3500_01   (2006-03-03)
 
 ** Improvements
 
+- Added failure recording and playback, which is great for building
+  regression-testing suites and for recording failures in the wild.
+  Both Test::LectroTest and Test::LectroTest::Compat take the
+  following options:
+
+  - playback_failures => file
+  - record_failures => file
+  - regressions => file
+
+  The first tells LT to use the prerecorded failures in the given file
+  for playback during testing *in addition to* the normal randomly
+  generated cases.  The second tells LT to record any failures that
+  occur during testing.  The failues will be written to the given
+  file.  The third is a shorthand for setting the first two options to
+  the same file.  It is a more readable way to declare your intent to
+  build up and use a persistent regressions file.
+
+  These options are documented more fully in the docs for
+  Test::LectroTest::TestRunner.
 
 
 * 0.3400   (2006-01-18)

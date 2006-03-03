@@ -85,7 +85,7 @@ sub import {
     my $caller = caller;
     { no strict 'refs';  *{$caller.'::holds'} = \&holds; }
     $Test->exported_to($caller);
-    $Test->plan(@_);
+    $Test->plan(_filter_recorder_opts(@_));
     Test::LectroTest::Property->export_to_level(1, $self);
     Test::LectroTest::Generator->export_to_level(1, $self, ':all');
     filter_add(Test::LectroTest::Property->_make_code_filter);
@@ -104,14 +104,54 @@ sub holds {
     return $success ? 1 : 0;    # same result policy as Test::Builder::ok
 }
 
+my ($playback_failures, $record_failures);
+
 sub _check_property {
     no warnings 'redefine';
     my $diag_store = [];
     my $property = shift;
     local *Test::Builder::ok   = \&_disconnected_ok;
     local *Test::Builder::diag = sub { shift; push @$diag_store, @_; 0 };
-    return ( $diag_store, 
-             Test::LectroTest::TestRunner->new(@_)->run($property) );
+
+    # for efficiency, we recycle any recorders that the TestRunner
+    # may have created (the recorders cache test cases)
+
+    my @opts = (
+        $playback_failures ? (playback_failures => $playback_failures) : (),
+        $record_failures ? (record_failures => $record_failures) : (),
+        @_  # passed-in options go last to override defaults
+    );
+    my $runner = Test::LectroTest::TestRunner->new(@opts);
+    my @results = ($diag_store, $runner->run($property));
+    $playback_failures = $runner->playback_failures
+        if $playback_failures && !ref($playback_failures);
+    $record_failures = $runner->record_failures
+        if $record_failures && !ref($record_failures);
+    return @results;
+}
+
+my @RECORDER_OPTS = qw( record_failures playback_failures regressions );
+
+sub _filter_recorder_opts {
+    my (@opts);
+    while (@_) {
+        unless (grep $_ eq $_[0], @RECORDER_OPTS) {
+            push @opts, shift;
+        }
+        else {
+            my ($ropt, $rval) = (shift, shift);
+            if ($ropt eq "regressions") {
+                $playback_failures = $record_failures = $rval;
+            }
+            elsif ($ropt eq "playback_failures") {
+                $playback_failures = $rval;
+            }
+            else {
+                $record_failures = $rval;
+            }
+        }
+    }
+    return @opts;
 }
 
 # the following sub replaces Test::Builder's

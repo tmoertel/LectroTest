@@ -9,6 +9,8 @@ use Carp;
 use Data::Dumper;
 
 use Test::LectroTest::Property qw( NO_FILTER );
+use Test::LectroTest::FailureRecorder;
+use Test::LectroTest::Generator qw( Unit );
 
 =head1 NAME
 
@@ -46,11 +48,14 @@ The following methods are available.
 
 =cut
 
-our %defaults = ( trials  =>  1_000,
-                  retries => 20_000,
-                  scalefn => sub { $_[0] / 2 + 1 },
-                  number  => 1,
-                  verbose => 1
+our %defaults = (
+    trials            =>  1_000,
+    retries           => 20_000,
+    scalefn           => sub { $_[0] / 2 + 1 },
+    number            => 1,
+    verbose           => 1,
+    record_failures   => undef,
+    playback_failures => undef,
 );
 
 # build field accessors
@@ -64,6 +69,11 @@ for my $field (keys %defaults) {
     };
 }
 
+sub regressions {
+    my ($self, $value) = @_;
+    $self->record_failures($value);
+    $self->playback_failures($value);
+}
 
 =pod
 
@@ -111,11 +121,40 @@ of the trials.
 
 =item verbose
 
-If true (the default) the TestRunner will use verbose output that
-includes things like label frequencies and counterexamples.  Otherwise,
-only one-line summaries will be output.  Unless you have a good
-reason to do otherwise, leave this parameter alone because verbose
-output is almost always what you want.
+If this paramter is set to true (the default) the TestRunner will use
+verbose output that includes things like label frequencies and
+counterexamples.  Otherwise, only one-line summaries will be output.
+Unless you have a good reason to do otherwise, leave this parameter
+alone because verbose output is almost always what you want.
+
+=item record_failures
+
+If this parameter is set to a file's pathname (or a FailureRecorder
+object), the TestRunner will record property-check failures to the
+file (or recorder).  (This is an easy way to build a
+regression-testing suite.)  If the file cannot be written to, this
+parameter will be ignored.  Set this parameter to C<undef> (the
+default) to turn off recording.
+
+=item playback_failures
+
+If this parameter is set to a file's pathname (or a FailureRecorder
+object), the TestRunner will load previously recorded failures from
+the file (or recorder) and use them as I<additional> test cases when
+checking properties.  If the file cannot be read, this option will be
+ignored.  Set this parameter to C<undef> (the default) to turn off
+recording.
+
+=item regressions
+
+If this parameter is set to a file's pathname (or a FailureRecorder
+object), the TestRunner will load failures from and record failures to
+the file (or recorder).  Setting this parameter is a shortcut for, and
+exactly equivalent to, setting I<record_failures> and
+<playback_failures> to the same value, which is typically what you
+want when managing a persistent suite of regression tests.
+
+This is a write-only accessor.
 
 =back
 
@@ -128,7 +167,11 @@ using accessors of the same name.  For example:
 
 sub new {
     my $class = shift;
-    return bless { %defaults, @_ }, $class;
+    my $self = bless { %defaults, @_ }, $class;
+    if (defined(my $val = delete $self->{regressions})) {
+        $self->regressions($val);
+    }
+    return $self;
 }
 
 =pod
@@ -153,6 +196,14 @@ used.
 
   $results = $runner->run( $third_property, 3 );
 
+Additionally, if the TestRunner's I<playback_failures> parameter is
+defined, this method will play back any relevant failure cases from
+the given playback file (or FailureRecorder).
+
+Additionally, if the TestRunner's I<record_failures> parameter is
+defined, this method will record any new failures to the given file
+(or FailureRecorder).
+
 =cut
 
 sub run {
@@ -176,10 +227,24 @@ sub run {
 
     my %labels;
     my $attempts = 0;
+    my $in_regressions = 1;
 
     # for each set of input-generators, run a series of trials
 
-    for my $gen_specs (@$inputs_list) {
+    for my $gen_specs (@{$self->_regression_generators($name)},
+                       undef,  # separator
+                       @$inputs_list) {
+
+        # an undef value separates the regression-test generators (if
+        # any) from the property's own generators; we use it to turn
+        # on failure recording after the regression-test generators
+        # have all been used.  (we don't record failures during
+        # regression testing because they have already been recorded)
+
+        if (!defined($gen_specs)) {
+            $in_regressions = 0;
+            next;
+        }
 
         my $retries = 0;
         my $base_size = 0;
@@ -234,17 +299,78 @@ sub run {
                 $results->counterexample_( $inputs );
                 $results->notes_( $controller->notes );
                 $results->attempts( $attempts );
+                $self->_record_regression( $name, $inputs )
+                    unless $in_regressions;
                 return $results;
             }
+
+            # if we just ran a regression test, only one trial is needed
+            # since the generators return constant values
+
+            last if $in_regressions;
 
             # otherwise, loop up to the next trial
         }
     }
+
     $results->success(1);
     $results->attempts( $attempts );
     $results->labels( \%labels );
     return $results;
 }
+
+sub _recorder_for_writes {
+    shift->_get_recorder('record_failures');
+}
+
+sub _recorder_for_reads {
+    shift->_get_recorder('playback_failures');
+}
+
+sub _get_recorder {
+    my ($self, $attr) = @_;
+    my $val = $self->{$attr};
+    if ($val && ! ref $val) {
+        $val = $self->{$attr} = Test::LectroTest::FailureRecorder->new($val);
+    }
+    return $val;
+}
+
+sub _regression_generators {
+
+    my ($self, $prop_name) = @_;
+
+    # if we get an error reading failures from the recorder, ignore it
+    # because if we're building a new regression suite, there may not
+    # even be a failure-recording file yet
+
+    my $failures = eval {
+        $self->_recorder_for_reads->get_failures_for_property($prop_name);
+    } || [];
+
+    my @gens;
+
+    for my $inputs (@$failures) {
+
+        # convert the failure case's inputs into a set of generator
+        # bindings that will generate the failure case
+
+        my %gen_bindings;
+        $gen_bindings{$_} = Unit($inputs->{$_}) for keys %$inputs;
+        push @gens, \%gen_bindings;
+    }
+
+    return \@gens;
+}
+
+sub _record_regression {
+    my ($self, $name, $inputs) = @_;
+    eval {
+        $self->_recorder_for_writes # may be undef
+             ->record_failure_for_property($name, $inputs);
+    };
+}
+
 
 =pod
 
