@@ -15,6 +15,10 @@
 
 - Andy Lester for prodding me into getting the word out and writing
   something about LectroTest.
+
+- Steffen Müller for good ideas about testing corner cases, which
+  became the basis for LectroTests's failure recording and playback
+  capabilities.
   
 --
 Tom Moertel <tom@moertel.com>
