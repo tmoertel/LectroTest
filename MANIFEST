@@ -12,6 +12,7 @@ lib/Test/LectroTest/Compat.pm
 lib/Test/LectroTest/FailureRecorder.pm
 lib/Test/LectroTest/Generator.pm
 lib/Test/LectroTest/Property.pm
+lib/Test/LectroTest/RegressionTesting.pod
 lib/Test/LectroTest/TestRunner.pm
 lib/Test/LectroTest/Tutorial.pod
 t/lib/CaptureOutput.pm

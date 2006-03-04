@@ -137,6 +137,28 @@ fewer trials, pass the C<trials=E<gt>>I<N> flag:
   use Test::LectroTest trials => 10_000;
 
 
+=head1 TESTING FOR REGRESSIONS AND CORNER CASES
+
+LectroTest can record failure-causing test cases to a file, and it can
+play those test cases back as part of its normal testing strategy.
+The easiest way to take advantage of this feature is to set the
+I<regressions> parameter when you C<use> this module:
+
+    use Test::LectroTest
+        regressions => "regressions.txt";
+
+This tells LectroTest to use the file "regressions.txt" for both
+recording and playing back failures.  If you want to record and
+play back from separate files, use the I<record_failures> and
+I<playback_failures> options:
+
+    use Test::LectroTest
+        playback_failures => "regression_suite_for_my_module.txt",
+        record_failures   => "failures_in_the_field.txt";
+
+See L<Test::LectroTest::RegressionTesting> for more.
+
+
 =head1 CAVEATS
 
 When you use this module, it imports all of the generator-building
@@ -192,6 +214,9 @@ For a gentle introduction to LectroTest, see
 L<Test::LectroTest::Tutorial>.  Also, the slides from my LectroTest
 talk for the Pittsburgh Perl Mongers make for a great introduction.
 Download a copy from the LectroTest home (see below).
+
+L<Test::LectroTest::RegressionTesting> explains how to test for
+regressions and corner cases using LectroTest.
 
 L<Test::LectroTest::Compat> lets you mix LectroTest with the
 popular family of L<Test::Builder>-based modules such as

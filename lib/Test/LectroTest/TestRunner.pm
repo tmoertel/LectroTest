@@ -80,10 +80,11 @@ sub regressions {
 =head2 new(I<named-params>)
 
   my $runner = new Test::LectroTest::TestRunner(
-    trials  => 1_000,
-    retries => 20_000,
-    scalefn => sub { $_[0] / 2 + 1 },
-    verbose => 1
+    trials      => 1_000,
+    retries     => 20_000,
+    scalefn     => sub { $_[0] / 2 + 1 },
+    verbose     => 1,
+    regressions => "/path/to/regression_suite.txt",
   );
 
 Creates a new Test::LectroTest::TestRunner and configures it with the
@@ -132,9 +133,9 @@ alone because verbose output is almost always what you want.
 If this parameter is set to a file's pathname (or a FailureRecorder
 object), the TestRunner will record property-check failures to the
 file (or recorder).  (This is an easy way to build a
-regression-testing suite.)  If the file cannot be written to, this
-parameter will be ignored.  Set this parameter to C<undef> (the
-default) to turn off recording.
+regression-testing suite.)  If the file cannot be created or
+written to, this parameter will be ignored.  Set this parameter to
+C<undef> (the default) to turn off recording.
 
 =item playback_failures
 
@@ -815,10 +816,15 @@ package Test::LectroTest::TestRunner;
 
 1;
 
+
 =head1 SEE ALSO
 
 L<Test::LectroTest::Property> explains in detail what
 you can put inside of your property specifications.
+
+L<Test::LectroTest::RegressionTesting> explains how to test for
+regressions and corner cases using LectroTest.
+
 
 =head1 LECTROTEST HOME
 
@@ -828,15 +834,18 @@ There you will find more documentation, presentations, mailing-list archives, a 
 and other helpful LectroTest-related resources.  It's also the
 best place to ask questions.
 
+
 =head1 AUTHOR
 
 Tom Moertel (tom@moertel.com)
+
 
 =head1 INSPIRATION
 
 The LectroTest project was inspired by Haskell's
 QuickCheck module by Koen Claessen and John Hughes:
 http://www.cs.chalmers.se/~rjmh/QuickCheck/.
+
 
 =head1 COPYRIGHT and LICENSE
 

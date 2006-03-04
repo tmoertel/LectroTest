@@ -97,7 +97,6 @@ sub _store {
 Returns a reference to an array that contains the recorded failures
 for the property with the name I<propname>.  In the event no
 such failures exist, the array will be empty.
-
 Each failure is represented by a hash containing the inputs that
 caused the failure.
 
