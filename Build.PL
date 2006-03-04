@@ -10,6 +10,7 @@ my $build = Module::Build->new
                         },
   build_requires     => { File::Temp => 0, Test::More => 0,
                         },
+  sign               => 1,
 );
 
 $build->create_build_script;

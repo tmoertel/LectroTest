@@ -28,6 +28,12 @@ Tom Moertel (tom@moertel.com)
   These options are documented more fully in the docs for
   Test::LectroTest::TestRunner.
 
+** Misc
+
+- I'm now using Module::Signature to sign the Test::LectroTest
+  distribution.
+
+
 
 * 0.3400   (2006-01-18)
 

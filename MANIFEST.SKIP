@@ -10,7 +10,6 @@
 \bMakeMaker-\d
 \bpm_to_blib$
 \bblibdirs$
-^MANIFEST\.SKIP$
 
 # Avoid Module::Build generated and utility files.
 \bBuild$

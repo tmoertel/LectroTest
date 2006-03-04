@@ -1,6 +1,7 @@
 Build.PL
 Changes
 MANIFEST			This list of files
+MANIFEST.SKIP
 META.yml
 Makefile.PL
 README
@@ -14,6 +15,7 @@ lib/Test/LectroTest/Property.pm
 lib/Test/LectroTest/TestRunner.pm
 lib/Test/LectroTest/Tutorial.pod
 t/lib/CaptureOutput.pm
+t/0-signature.t
 t/compat.t
 t/docs-eg.t
 t/gens.t
