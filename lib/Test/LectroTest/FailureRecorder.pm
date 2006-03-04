@@ -135,13 +135,13 @@ sub record_failure_for_property {
     my ($self, $property_name, $input_hash) = @_;
     my $file = $self->{file};
     my $rec  = [ $property_name, $input_hash ];
-    open my $fh, ">>$file" or die "could not open $file for appending: $!";
     local $\ = "\n\n";
     local $Data::Dumper::Indent   = 0;
     local $Data::Dumper::Purity   = 1;
     local $Data::Dumper::Terse    = 1;
     local $Data::Dumper::Deepcopy = 1;
     local $Data::Dumper::Useqq    = 1;
+    open my $fh, ">>$file" or die "could not open $file for appending: $!";
     print $fh
         '# ', scalar gmtime, "\n",
         '# ', $self->_platform, "\n",
