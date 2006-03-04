@@ -5,13 +5,13 @@ Test::LectroTest::Tutorial - How to use LectroTest to test your software
 =head1 SYNOPSIS
 
 LectroTest is an automated, specification-based testing system.  To
-use it, you declare properties that specify the expected behavior of
-your software.  LectroTest then checks to see whether those properties
+use it, declare properties that specify the expected behavior of your
+software.  Then invoke LectroTest to test whether those properties
 hold.
 
-It does this by running repeated random trials against your software.
-If LectroTest finds that a property doesn't hold, it emits the
-counterexample that "broke" your software.  You can then plug the
+LectroTest does this by running repeated random trials against your
+software.  If LectroTest finds that a property doesn't hold, it emits
+the counterexample that "broke" your software.  You can then plug the
 counterexample into your software to debug the problem.  (It's also a
 good idea to add the counterexample to your list of regression tests.)
 

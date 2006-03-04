@@ -38,7 +38,7 @@ L<Test::LectroTest>.  If you really want to learn about the
 property-checking apparatus or turn its control knobs, read on.
 
 This module provides Test::LectroTest::TestRunner, a class of objects
-that tests properties by running repeated random trials.  You create a
+that tests properties by running repeated random trials.  Create a
 TestRunner, configure it, and then call its C<run> or C<run_suite>
 methods to test properties individually or in groups.
 
