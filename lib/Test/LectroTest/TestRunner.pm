@@ -14,7 +14,7 @@ use Test::LectroTest::Generator qw( Unit );
 
 =head1 NAME
 
-Test::LectroTest::TestRunner - Configurable Test::Harness-compatible engine for running LectroTest property checks
+Test::LectroTest::TestRunner - Configurable TAP-compatible engine for running LectroTest property checks
 
 =head1 SYNOPSIS
 
@@ -27,7 +27,7 @@ Test::LectroTest::TestRunner - Configurable Test::Harness-compatible engine for 
  my $result = $runner->run( $a_single_lectrotest_property );
  print $result->details unless $result->success;
 
- # test a suite of properties, w/ Test::Harness output
+ # test a suite of properties, w/ Test::Harness::TAP output
  my $num_successful = $runner->run_suite( @properties );
  print "All passed!" if $num_successful == @properties;
 
@@ -384,7 +384,7 @@ sub _record_regression {
 
 Checks a suite of properties, sending the results of each
 property checked to C<STDOUT> in a form that is compatible with
-L<Test::Harness>.  For example:
+L<Test::Harness::TAP>.  For example:
 
   1..5
   ok 1 - Property->new disallows use of 'tcon' in bindings
@@ -595,7 +595,7 @@ sub details {
         local $Data::Dumper::Terse = 1;
         $details .= "Caught exception: " . Dumper($ex);
     }
-    $details =~ s/^/\# /mg if $details;  # mark as Test::Harness comments
+    $details =~ s/^/\# /mg if $details;  # mark as TAP comments
     return "$summary$details";
 }
 
@@ -824,6 +824,10 @@ you can put inside of your property specifications.
 
 L<Test::LectroTest::RegressionTesting> explains how to test for
 regressions and corner cases using LectroTest.
+
+L<Test::Harness:TAP> documents the Test Anything Protocol,
+Perl's simple text-based interface between testing modules such
+as L<Test::LectroTest> and the test harness L<Test::Harness>.
 
 
 =head1 LECTROTEST HOME
