@@ -146,7 +146,7 @@ sub record_failure_for_property {
         '# ', scalar gmtime, "\n",
         '# ', $self->_platform, "\n",
         Dumper( $rec );
-    close $fh or die "could not close $file: $!";
+    close $fh;
     push @{$self->{cache}}, $rec if $self->{cache};
     1;
 }

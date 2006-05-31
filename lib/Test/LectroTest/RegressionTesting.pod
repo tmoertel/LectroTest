@@ -31,7 +31,7 @@ Say that LectroTest uncovers a bug in your software by finding a
 random test case that proves one of your properties to be false.  If
 you apply a fix for the bug, how can you be sure that LectroTest will
 re-test the property using the exact same test case that "broke" it
-before, just to be certain the bug really is fixed?  And, how can you
+before, just to be certain the bug really is fixed?  And how can you
 be sure that future changes to your code will not reintroduce the same
 bug without your knowing it?
 

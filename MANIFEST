@@ -25,4 +25,5 @@ t/pod-coverage.t
 t/pod.t
 t/props.t
 t/props2.t
+t/recorder.t
 t/runner.t

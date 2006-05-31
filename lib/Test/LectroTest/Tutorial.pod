@@ -65,7 +65,7 @@ bindings and not regular Perl code.)
 
 We can read the above property like so: "For all integers I<x> and all
 characters I<c> in the range A through Z, we assert that
-C<the_thing_we_are_testing> is non_negative."  
+C<the_thing_we_are_testing> is non-negative."  
 
 =head2 Testing whether your Properties hold
 

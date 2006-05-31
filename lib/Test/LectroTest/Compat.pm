@@ -87,7 +87,8 @@ I<regressions> parameter when you C<use> this module:
 
 This tells LectroTest to use the file "regressions.txt" for both
 recording and playing back failures.  If you want to record and
-play back from separate files, use the I<record_failures> and
+play back from separate files, or want only to record I<or> play
+back, use the I<record_failures> and/or
 I<playback_failures> options:
 
     use Test::LectroTest::Compat
@@ -149,14 +150,20 @@ sub _check_property {
     );
     my $runner = Test::LectroTest::TestRunner->new(@opts);
     my @results = ($diag_store, $runner->run($property));
+
+    # the TestRunner may have converted file names into TestRecorder
+    # objects, so we just "upgrade" to these objects if they exist
+    # and we're still holding filenames
+
     $playback_failures = $runner->playback_failures
         if $playback_failures && !ref($playback_failures);
     $record_failures = $runner->record_failures
         if $record_failures && !ref($record_failures);
+
     return @results;
 }
 
-my @RECORDER_OPTS = qw( record_failures playback_failures regressions );
+my @RECORDER_OPTS = (qw( record_failures playback_failures regressions ));
 
 sub _filter_recorder_opts {
     my (@opts);

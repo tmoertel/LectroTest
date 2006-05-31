@@ -252,7 +252,7 @@ sub run {
         my @vars = sort keys %$gen_specs;
         my $scalefn = $self->scalefn;
 
-        for (1 .. $self->trials) {
+        for (1 .. ($in_regressions ? 1 : $self->trials)) {
 
             # run a trial
 
@@ -304,11 +304,6 @@ sub run {
                     unless $in_regressions;
                 return $results;
             }
-
-            # if we just ran a regression test, only one trial is needed
-            # since the generators return constant values
-
-            last if $in_regressions;
 
             # otherwise, loop up to the next trial
         }

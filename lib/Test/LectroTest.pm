@@ -149,7 +149,8 @@ I<regressions> parameter when you C<use> this module:
 
 This tells LectroTest to use the file "regressions.txt" for both
 recording and playing back failures.  If you want to record and
-play back from separate files, use the I<record_failures> and
+play back from separate files, or want only to record I<or> play
+back, use the I<record_failures> and/or
 I<playback_failures> options:
 
     use Test::LectroTest

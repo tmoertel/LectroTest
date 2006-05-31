@@ -258,7 +258,7 @@ input conditions, and returns true or false to indicate acceptance or
 rejection.  If you are using the C<Property> function to create your
 property objects, lexically bound variables are created and loaded
 with values automatically, per your input-generator specification, so
-you can use the variables immediately:
+you can just go ahead and use the variables immediately:
 
   my $prop = Property {
     ##[ i <- Int, delta <- Float(range=>[0,1]) ]##
