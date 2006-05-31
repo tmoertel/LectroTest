@@ -4,7 +4,7 @@ LectroTest Change Log
 Tom Moertel (tom@moertel.com)
 
 
-* 0.3500_01   (2006-03-03)
+* 0.3500   (2006-05-31)
 
 ** Improvements
 
@@ -18,7 +18,7 @@ Tom Moertel (tom@moertel.com)
   - regressions => file
 
   The first tells LT to use the prerecorded failures in the given file
-  for playback during testing *in addition to* the normal randomly
+  for playback during testing, *in addition to* the normal randomly
   generated cases.  The second tells LT to record any failures that
   occur during testing.  The failues will be written to the given
   file.  The third is a shorthand for setting the first two options to
