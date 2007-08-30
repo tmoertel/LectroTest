@@ -19,6 +19,10 @@
 - Steffen Müller for good ideas about testing corner cases, which
   became the basis for LectroTests's failure recording and playback
   capabilities
+
+- Andreas Koenig (ANDK) for suggesting that I modify the test
+  suite for generators (t/gens.t) to emit a notice that test
+  failures do not necessarily indicate a failure.
   
 --
 Tom Moertel <tom@moertel.com>

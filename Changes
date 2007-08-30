@@ -9,7 +9,7 @@ Tom Moertel (tom@moertel.com)
 ** Misc
 
 - Test suite for generators now emits notice that a failure may
-  not indicate a real problem.  (rt.cpan.org #28203)
+  not indicate a real problem.  (rt.cpan.org #28203; thanks ANDK)
 
 - Minor typo fixes in the documentation.
 
