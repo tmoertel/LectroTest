@@ -4,6 +4,17 @@ LectroTest Change Log
 Tom Moertel (tom@moertel.com)
 
 
+* 0.3600   (2007-08-30)
+
+** Misc
+
+- Test suite for generators now emits notice that a failure may
+  not indicate a real problem.  (rt.cpan.org #28203)
+
+- Minor typo fixes in the documentation.
+
+
+
 * 0.3500   (2006-05-31)
 
 ** Improvements
