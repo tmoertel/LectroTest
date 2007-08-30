@@ -5,6 +5,7 @@ use Test::More tests => 248;
 
 BEGIN { use_ok( 'Test::LectroTest::Generator', qw(:common :combinators) ) }
 
+
 =head1 NAME
 
 gens.t - Unit tests for Test::LectroTest::Generator
@@ -15,19 +16,47 @@ gens.t - Unit tests for Test::LectroTest::Generator
 
 =head1 DESCRIPTION
 
-B<Important:> This test suite relies upon a number of randomized
-tests and statistical inferences.  As a result, there is a small
-probability (about 1 in 200) that some part of the suite will fail
-even if everything is working properly.  Therefore, if a test fails,
-re-run the test suite to determine whether the supposed problem is
-real or just a rare instance of the Fates poking fun at you.
+B<Important:> This test suite relies upon a number of randomized tests
+and statistical inferences.  As a result, there is a small probability
+(about 1 in 200) that some part of the suite will fail even if
+everything is working properly.  Therefore, if a test fails, re-run
+the test suite to determine whether the supposed problem is real or
+just a rare instance of the Fates poking fun at you.
 
-This documentation is written mainly for programmers who maintain
-the test suite.  If you are an end user of the LectroTest modules, you
-can stop reading now because otherwise you will be bored to tears.
+This documentation is written mainly for programmers who maintain the
+test suite.  If you are an end user of the LectroTest modules, you can
+stop reading now because otherwise you will be bored to tears.
 
 =cut
 
+
+# set up warning net for errors in this test suite
+
+BEGIN {
+    no warnings 'redefine';
+    my $failures;
+    my $ok = \&Test::Builder::ok;
+    *Test::Builder::ok = sub { (my $r = $ok->(@_)) || emit_warning(); $r };
+}
+
+
+sub emit_warning {
+    Test::Builder->new->diag(<<EOF);
+
+============================================================
+
+IMPORTANT!  A TEST FAILURE MAY NOT REPRESENT A REAL PROBLEM.
+
+This test suite relies upon a number of randomized tests and
+statistical inferences.  So, there is a small probability
+that some part of the suite will fail even if everything is
+actually fine.  Therefore, re-run the test suite.  You do
+not have a problem unless the suite fails repeatably.
+
+============================================================
+
+EOF
+}
 
 
 #==============================================================================
