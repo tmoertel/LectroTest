@@ -34,7 +34,6 @@ stop reading now because otherwise you will be bored to tears.
 
 BEGIN {
     no warnings 'redefine';
-    my $failures;
     my $ok = \&Test::Builder::ok;
     *Test::Builder::ok = sub { (my $r = $ok->(@_)) || emit_warning(); $r };
 }
