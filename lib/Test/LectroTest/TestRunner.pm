@@ -29,7 +29,7 @@ Test::LectroTest::TestRunner - Configurable TAP-compatible engine for running Le
 
  # test a suite of properties, w/ Test::Harness::TAP output
  my $num_successful = $runner->run_suite( @properties );
- print "All passed!" if $num_successful == @properties;
+ print "# All passed!" if $num_successful == @properties;
 
 =head1 DESCRIPTION
 

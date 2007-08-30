@@ -8,7 +8,7 @@ use Data::Dumper;
 
 =head1 NAME
 
-Test::LectroTest::FailureRecorder - records/plays failures for regression testing
+Test::LectroTest::FailureRecorder - Records/plays failures for regression testing
 
 =head1 SYNOPSIS
 

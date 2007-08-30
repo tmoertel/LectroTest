@@ -97,7 +97,7 @@ I<playback_failures> options:
 
 See L<Test::LectroTest::RegressionTesting> for more.
 
-*NOTE:*  If you pass any of the recording or playback parameters
+B<NOTE:>  If you pass any of the recording or playback parameters
 to Test::LectroTest::Compat, you must have version 0.3500 or
 greater of LectroTest installed.  Module authors, update your
 modules' build dependencies accordingly.
