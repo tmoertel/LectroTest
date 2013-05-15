@@ -30,5 +30,8 @@
 - Nicholas Bamber (SILASMONK) for patch to remove UNIVERSAL->import
   https://rt.cpan.org/Public/Bug/Display.html?id=66114
 
+- Ricardo SIGNES for the thunderously time-saving Dist::Zilla
+
+
 --
 Tom Moertel <tom@moertel.com>
