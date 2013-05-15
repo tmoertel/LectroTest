@@ -23,6 +23,9 @@
 - Andreas Koenig (ANDK) for suggesting that I modify the test
   suite for generators (t/gens.t) to emit a notice that test
   failures do not necessarily indicate a failure.
-  
+
+- Petr Pisar for reporting a missing prototype
+  https://rt.cpan.org/Ticket/Display.html?id=85281
+
 --
 Tom Moertel <tom@moertel.com>

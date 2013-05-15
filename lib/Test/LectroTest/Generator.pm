@@ -888,6 +888,7 @@ B<Note:> This combinator does not accept modifiers.
 
 =cut
 
+sub _flatten(@);
 sub _flatten(@) {
     _concat map { ref($_) ? _flatten(@$_) : ($_) } @_ ;
 }
