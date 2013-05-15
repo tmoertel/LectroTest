@@ -98,7 +98,7 @@ sub Property(&&@) {
         inputs => $genspec_fn->(),
         test   => $test_fn,
         @args
-    );                            
+    );
 }
 
 =pod
@@ -292,7 +292,7 @@ Inside the behavior test, you have access to a special variable
 C<$tcon> that allows you to interact with the test controller.
 Through C<$tcon> you can do the following:
 
-=over 4 
+=over 4
 
 =item *
 
@@ -387,7 +387,7 @@ sub _make_code_filter {
                 # opening of multi-line decl
                 $content .= " $1";
             }
-            elsif ($content && 
+            elsif ($content &&
                    s| ^(.*?)\#*\s*\]\#\# |
                       _binding($1)."]]}"._body("$content$1") |exs) {
                 # close of multi-line decl
@@ -444,7 +444,7 @@ the syntax, you can disable the filter like so:
 
 =head1 LECTROTEST HOME
 
-The LectroTest home is 
+The LectroTest home is
 http://community.moertel.com/LectroTest.
 There you will find more documentation, presentations, mailing-list archives, a wiki,
 and other helpful LectroTest-related resources.  It's also the

@@ -235,7 +235,7 @@ procedure.
 
 =head1 LECTROTEST HOME
 
-The LectroTest home is 
+The LectroTest home is
 http://community.moertel.com/LectroTest.
 There you will find more documentation, presentations, mailing-list archives, a wiki,
 and other helpful LectroTest-related resources.  It's also the

@@ -95,7 +95,7 @@ modifier.
 The purpose of sizing is to allow LectroTest to generate simple values
 at first and then, as testing progresses, to slowly ramp up the
 complexity.  In this way, counterexamples for obvious problems
-will be easier for you to understand.  
+will be easier for you to understand.
 
 =cut
 
@@ -151,7 +151,7 @@ sub Gen(&) {
     return Test::LectroTest::Generator->new(generator=>$genfn);
 }
 
-=pod 
+=pod
 
 =head2 Generators
 
@@ -286,7 +286,7 @@ sub Float(@) {
             $lo = -$size if -$size > $lo;
             $hi =  $size if  $size < $hi;
         }
-        return $lo + rand($hi - $lo);            
+        return $lo + rand($hi - $lo);
     };
 }
 
@@ -1139,7 +1139,7 @@ specification-based testing with LectroTest.
 
 =head1 LECTROTEST HOME
 
-The LectroTest home is 
+The LectroTest home is
 http://community.moertel.com/LectroTest.
 There you will find more documentation, presentations, mailing-list archives, a wiki,
 and other helpful LectroTest-related resources.  It's also the
