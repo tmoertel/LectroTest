@@ -234,14 +234,6 @@ L<Test::Builder> is the test harness upon which this module
 is built.
 
 
-=head1 LECTROTEST HOME
-
-The LectroTest home is
-http://community.moertel.com/LectroTest.
-There you will find more documentation, presentations, mailing-list archives, a wiki,
-and other helpful LectroTest-related resources.  It's also the
-best place to ask questions.
-
 =head1 AUTHOR
 
 Tom Moertel (tom@moertel.com)
@@ -254,7 +246,7 @@ http://www.cs.chalmers.se/~rjmh/QuickCheck/.
 
 =head1 COPYRIGHT and LICENSE
 
-Copyright (c) 2004-05 by Thomas G Moertel.  All rights reserved.
+Copyright (c) 2004-13 by Thomas G Moertel.  All rights reserved.
 
 This program is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself.
