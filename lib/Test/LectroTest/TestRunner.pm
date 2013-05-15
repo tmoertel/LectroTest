@@ -3,10 +3,9 @@ package Test::LectroTest::TestRunner;
 use strict;
 use warnings;
 
-use UNIVERSAL qw( isa );
-
 use Carp;
 use Data::Dumper;
+use Scalar::Util qw(blessed);
 
 use Test::LectroTest::Property qw( NO_FILTER );
 use Test::LectroTest::FailureRecorder;
@@ -399,7 +398,7 @@ parameter after all of the properties in the argument list:
 
 =cut
 
-sub _prop($) { isa $_[0], "Test::LectroTest::Property" }
+sub _prop($) { blessed $_[0] && $_[0]->isa("Test::LectroTest::Property") }
 
 sub run_suite {
     local $| = 1;

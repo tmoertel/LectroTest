@@ -27,5 +27,8 @@
 - Petr Pisar for reporting a missing prototype
   https://rt.cpan.org/Ticket/Display.html?id=85281
 
+- Nicholas Bamber (SILASMONK) for patch to remove UNIVERSAL->import
+  https://rt.cpan.org/Public/Bug/Display.html?id=66114
+
 --
 Tom Moertel <tom@moertel.com>
