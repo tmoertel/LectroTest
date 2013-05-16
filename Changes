@@ -3,6 +3,23 @@
 LectroTest Change Log
 Tom Moertel (tom@moertel.com)
 
+* 0.5001   (2013-05-14)
+
+- Update Changes file.
+
+
+* 0.5000   (2013-05-15)
+
+- Remove signature test.
+
+- Stop using UNIVERSAL->import (fixes #66114).
+  Thanks Nicholas Bamber (SILASMONK) for the patch.
+
+- Add prototype to silence warning (fixes #85281).
+  Thanks to Petr Pisar for pointing out the problem.
+
+- Minor tweaks to whitespace
+
 
 * 0.3600   (2007-08-30)
 
@@ -114,7 +131,7 @@ Tom Moertel (tom@moertel.com)
 
 ** Misc
 
-- Added a bunch of new test cases. 
+- Added a bunch of new test cases.
 
 - Renamed test files: from t/001.t to t/gens.t, etc.
 
@@ -197,7 +214,7 @@ Tom Moertel (tom@moertel.com)
 
 ** Improvements
 
-- More new combinators that you can shake a stick at: 
+- More new combinators that you can shake a stick at:
   Each, Apply, Map, Concat, Flatten, ConcatMap, FlattenMap.
 
 - As usual, documentation tweaks:
@@ -251,7 +268,7 @@ Tom Moertel (tom@moertel.com)
 ** Fixes
 
 - !! Important fix: In generator bindings with more than one variable,
-  variables sometimes got each others' values.  
+  variables sometimes got each others' values.
 
 ** Improvements
 
@@ -297,4 +314,3 @@ Tom Moertel (tom@moertel.com)
 
 
 * 0.1001  First cut
-
