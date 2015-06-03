@@ -436,7 +436,7 @@ sub List(@) {
     my $template = _template(@_);
     my $builder = sub {
         my ($len, $size) = @_;
-        my $subsize = defined $size ? $size / ($len+1) : 1;
+        my $subsize = defined $size ? $size / ($len+1) : undef;
         my @list;
         foreach (1..$len) {
             foreach my $generator (@$template) {
